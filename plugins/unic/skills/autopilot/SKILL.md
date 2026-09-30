@@ -13,13 +13,11 @@ description: >
   Integrates with BMAD skills and cmux-swarm when present; otherwise uses generic
   subagents. NOT for one-off edits or tasks needing constant human steering.
 compatibility: >
-  Any git repository. Spawns fresh build + review contexts via the Agent (subagent)
-  tool — review independence ("never self-review") is satisfied by separate
-  subagents. Optionally uses cmux-swarm (if installed) for real separate panes, and
-  BMAD method skills (if the repo has _bmad/) for story authoring/review. Honors the
-  repo's CLAUDE.md / docs/conventions. Requires the ability to run the project's
-  test/typecheck/lint commands. Does NOT spend money, use secrets, or touch external
-  systems on the owner's behalf — those become logged owner-action items, never blockers.
+  Any git repository. Spawns fresh build + review contexts via the Agent tool, so
+  review is never self-review. Optionally uses cmux-swarm for real panes and BMAD
+  skills (if the repo has _bmad/). Honors CLAUDE.md / docs/conventions. Needs to run
+  the project's test/typecheck/lint. Never spends money, uses secrets, or touches
+  external systems — those become logged owner-action items, never blockers.
 metadata:
   version: 1.2.0
 ---
