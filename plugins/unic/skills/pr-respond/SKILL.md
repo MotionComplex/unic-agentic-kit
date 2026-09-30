@@ -1,18 +1,16 @@
 ---
 name: pr-respond
 description: >
-  Helps the PR author react to reviewer feedback on an Azure DevOps pull request. Required input:
-  a PR ID or PR URL — if not provided, the skill auto-detects the PR from the current git branch
-  (matches active PRs by source branch). Fetches all comment threads via the Azure DevOps MCP,
-  filters to threads that are awaiting an author response (active status, latest comment not from
-  the user), reads the current code at each thread's anchor so the response reflects the latest
-  state, and walks the threads with the user to decide per-thread: apply a code fix, draft a
-  reply, push back, ask a clarifying question, or defer. Code changes are made via Edit/Write;
-  replies are posted via `repo_reply_to_comment`. Sibling to `/pr-review` — that skill produces
-  reviews, this one responds to them. Supports four delivery modes: markdown-first (async
-  iteration via a responses file), interactive (walk threads one-by-one in chat), one-shot
-  (draft everything → confirm → post), and critical (scrutinize each comment, flag
-  clarifications, then one-shot-style confirm → post).
+  Helps the PR author react to reviewer feedback on an Azure DevOps pull request. Input: a PR ID
+  or URL — if omitted, auto-detects the PR from the current git branch. Fetches comment threads
+  via the Azure DevOps MCP, keeps those awaiting an author response (active, latest comment not
+  from the user), reads the current code at each thread's anchor, and walks the threads with the
+  user to decide per-thread: apply a code fix, draft a reply, push back, ask a clarifying
+  question, or defer. Code changes via Edit/Write; replies via `repo_reply_to_comment`. Sibling
+  to `/pr-review` — that skill produces reviews, this one responds to them. Four delivery modes:
+  markdown-first (async via a responses file), interactive (thread by thread in chat), one-shot
+  (draft all → confirm → post), and critical (scrutinize each comment, flag clarifications,
+  then confirm → post).
 compatibility: "Requires Azure DevOps MCP (PR thread access + commenting). Sibling to `/pr-review`: /pr-review produces outbound reviews; this skill handles inbound reviewer feedback on the author's own PR. Does not commit or push code changes — leaves that to the user unless explicitly asked."
 ---
 

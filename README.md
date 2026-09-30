@@ -7,13 +7,14 @@ marketplace: add it once and every plugin is available on every Claude surface.
 
 ```
 unic-agentic-kit/
-├── .claude-plugin/         # marketplace.json (this repo is a marketplace) + plugin.json (`unic`)
-├── skills/                 # autopilot, pr-review, pr-respond — shipped as the `unic` plugin
-├── agents/                 # autopilot-builder / -reviewer / -fixer — also in `unic`
+├── .claude-plugin/         # marketplace.json — this repo is a plugin marketplace
 ├── plugins/
+│   ├── unic/
+│   │   ├── skills/         # autopilot, pr-review, pr-respond
+│   │   ├── agents/         # autopilot-builder / -reviewer / -fixer
+│   │   └── conventions/    # Code-review and Azure DevOps conventions the PR skills cite
 │   ├── dor-dod/            # Definition of Ready/Done: spec, check, promote
 │   └── flowlever/          # Local review cockpit for specs and PR review/respond
-├── conventions/            # Code-review and Azure DevOps conventions the PR skills cite
 └── templates/
     └── docs-conventions/   # Starting points for a team repo's docs/conventions/
 ```
@@ -22,7 +23,7 @@ unic-agentic-kit/
 
 | Plugin | What it ships | Invoked as |
 |---|---|---|
-| `unic` | Repo-root `skills/` and `agents/` | `/unic:autopilot`, `/unic:pr-review`, `/unic:pr-respond` |
+| `unic` | `plugins/unic`: skills, agents, conventions | `/unic:autopilot`, `/unic:pr-review`, `/unic:pr-respond` |
 | `dor-dod` | DoR/DoD spec, check, promote | `/dor-dod:spec`, `/dor-dod:check`, `/dor-dod:promote` |
 | `flowlever` | Review cockpit app + skills | `/flowlever:start`, `/flowlever:audit`, `/flowlever:pr-review`, … |
 
@@ -59,6 +60,8 @@ collaborators are prompted to install it:
 
 ## Adding a skill
 
-Drop `skills/<name>/SKILL.md` in (it joins the `unic` plugin), or add a new plugin under
-`plugins/` and list it in `.claude-plugin/marketplace.json`. Check with
+Drop `plugins/unic/skills/<name>/SKILL.md` in (it joins the `unic` plugin), or add a new plugin
+under `plugins/` and list it in `.claude-plugin/marketplace.json`. Never make the repo root a
+plugin: claude.ai skips a plugin that contains other plugins. Keep each skill `description` under
+1024 characters — claude.ai truncates anything longer. Check with
 `claude plugin validate .claude-plugin/marketplace.json`.

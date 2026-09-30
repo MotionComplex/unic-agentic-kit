@@ -7,8 +7,8 @@
   "plugins": [
     {
       "name": "unic",
-      "source": "./",
-      "description": "Repo-root skills — autopilot (autonomous plan → build → review → fix loop), pr-review and pr-respond (Azure DevOps PRs) — plus the autopilot-builder/reviewer/fixer agents."
+      "source": "./plugins/unic",
+      "description": "autopilot (autonomous plan \u2192 build \u2192 review \u2192 fix loop), pr-review and pr-respond (Azure DevOps PRs), the autopilot-builder/reviewer/fixer agents, and the conventions they cite."
     },
     {
       "name": "dor-dod",

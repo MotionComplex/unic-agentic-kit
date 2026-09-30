@@ -6,15 +6,12 @@ description: >
   (never self-reviewing), deciding for itself, and not stopping until a Definition
   of Done is met. Use when the user says "autopilot", "run this autonomously",
   "keep going until it's done", "build this end-to-end without stopping", "drive
-  the stories/backlog to done", "ship it, no mocks", "don't stop until it works",
-  "wire everything up on its own", or hands over a goal/epic/backlog and wants it
-  delivered without babysitting. It makes recommended decisions itself, logs every
-  judgment call for owner review, works AROUND owner-gated blockers (secrets, money,
-  external access) instead of halting, and persists its state so it survives long
-  runs and context compaction. Integrates with BMAD skills (sprint-status,
-  create-story, dev-story, code-review) when present, and cmux-swarm for real
-  multi-pane workers; otherwise uses generic subagents. NOT for one-off edits or
-  tasks needing constant human steering — this is for "go build it until it's real."
+  the backlog to done", "ship it, no mocks", "don't stop until it works", or hands
+  over a goal/epic/backlog to deliver without babysitting. It decides itself, logs
+  every judgment call for owner review, works AROUND owner-gated blockers (secrets,
+  money, external access), and persists state across long runs and compaction.
+  Integrates with BMAD skills and cmux-swarm when present; otherwise uses generic
+  subagents. NOT for one-off edits or tasks needing constant human steering.
 compatibility: >
   Any git repository. Spawns fresh build + review contexts via the Agent (subagent)
   tool — review independence ("never self-review") is satisfied by separate

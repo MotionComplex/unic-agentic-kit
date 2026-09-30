@@ -71,5 +71,5 @@ uncertain, ask.
 
 ## When using Claude Code
 
-The `pr-review` skill in `unic-agentic-kit/skills/pr-review/` (`/unic:pr-review`) enforces this convention
+The `pr-review` skill in `unic-agentic-kit/plugins/unic/skills/pr-review/` (`/unic:pr-review`) enforces this convention
 automatically when generating reviews.
