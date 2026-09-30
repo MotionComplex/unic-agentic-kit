@@ -1,0 +1,19 @@
+{
+  "name": "dor-dod",
+  "displayName": "Definition of Ready / Done",
+  "version": "0.1.0",
+  "description": "Specification & development toolkit built on the FZAG DXP Definition of Ready/Done. Three skills sharing one source-of-truth checklist file: spec (author a story/bug/feature spec to the relevant DoR as tool-agnostic markdown), check (audit any artifact against the matching DoR/DoD and report gaps), and promote (publish a markdown draft to an Azure DevOps work item or a Confluence spec page). Works without MCP (markdown in/out) and uses Atlassian/Azure DevOps MCP when present.",
+  "author": {
+    "name": "MotionComplex"
+  },
+  "keywords": [
+    "definition-of-ready",
+    "definition-of-done",
+    "user-story",
+    "specification",
+    "refinement",
+    "gherkin",
+    "azure-devops",
+    "confluence"
+  ]
+}

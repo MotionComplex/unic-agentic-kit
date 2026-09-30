@@ -1,0 +1,8 @@
+# Stray local artifacts that have so far stayed untracked by luck rather than by rule —
+# `git add -A` would ship them otherwise.
+.DS_Store
+temp/
+
+# Cross-process lock directories (`<file>.lock`, e.g. ledger/<id>.json.lock) are created next to
+# the data files they guard, always inside DATA_DIR (app/data/ by default, already excluded by
+# app/.gitignore; ~/.flowlever or another FLOWLEVER_DATA path otherwise). No rule needed here.

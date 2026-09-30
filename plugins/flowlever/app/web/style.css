@@ -1,0 +1,2090 @@
+/* FlowLever cockpit — Lucide Zone design language.
+ * Deep navy-ink canvas · single warm-yellow brand accent · glass-on-color
+ * surfaces · Inter type · the Lucide Zone radius/shadow/motion recipes.
+ * Vanilla CSS, no build. Colors authored in OKLCH (same source as lucide-zone). */
+
+:root {
+  /* ── canvas & surfaces (lucide-zone dark / ink) ──────────────── */
+  --bg: oklch(0.18 0.012 264);              /* deep navy-ink canvas */
+  /* ambient color lives at the corners only (Canvas Discipline) so the
+     glass surfaces have something warm + cool to float over. */
+  --bg-grad:
+    radial-gradient(1100px 620px at 86% -12%, oklch(0.85 0.22 89 / 0.10) 0%, transparent 58%),
+    radial-gradient(900px 560px at -8% 108%, oklch(0.66 0.12 258 / 0.07) 0%, transparent 55%),
+    var(--bg);
+  --ink: oklch(0.1 0.012 264);              /* deepest surface — feature anchors */
+  --panel: oklch(0.22 0.014 264);           /* card */
+  --panel-2: oklch(0.245 0.014 264);        /* raised card */
+  --panel-3: oklch(0.275 0.012 264);        /* chips / insets */
+  --line: oklch(0.32 0.014 265);
+  --line-soft: oklch(0.27 0.014 265);
+
+  /* ── glass recipe (lit floating glass over ambient color) ────── */
+  --glass-bg: oklch(0.24 0.014 264 / 0.62);
+  --glass-bg-strong: oklch(0.24 0.014 264 / 0.82);
+  --glass-border: oklch(0.7 0.02 264 / 0.16);
+  --glass-highlight: oklch(1 0 0 / 0.06);
+  --glass-blur: 20px;
+  --glass-saturate: 140%;
+
+  /* ── text ────────────────────────────────────────────────────── */
+  --fg: oklch(0.96 0.005 80);
+  --fg-dim: oklch(0.82 0.01 266);
+  --fg-mute: oklch(0.7 0.012 266);
+
+  /* ── brand accent (single yellow, both "themes") ─────────────── */
+  --accent: oklch(0.85 0.22 89);
+  --accent-strong: oklch(0.78 0.22 80);
+  --accent-fg: oklch(0.3 0.09 89);          /* ink text on a yellow fill */
+  --accent-text: oklch(0.9 0.1 92);         /* yellow text on dark */
+  --accent-soft: oklch(0.85 0.22 89 / 0.14);
+  --accent-line: oklch(0.85 0.22 89 / 0.42);
+
+  /* ── kind tints (spec = yellow brand · pr-review = blue · pr-respond = violet) ── */
+  --kind-spec: var(--accent-text);
+  --kind-spec-soft: var(--accent-soft);
+  --kind-spec-line: var(--accent-line);
+  --kind-review: oklch(0.78 0.13 240);
+  --kind-review-soft: oklch(0.78 0.13 240 / 0.14);
+  --kind-review-line: oklch(0.78 0.13 240 / 0.44);
+  --kind-respond: oklch(0.78 0.14 310);
+  --kind-respond-soft: oklch(0.78 0.14 310 / 0.14);
+  --kind-respond-line: oklch(0.78 0.14 310 / 0.44);
+
+  /* ── severity (harmonized to lucide feedback hues) ───────────── */
+  --blocker: oklch(0.74 0.2 25);            /* error red */
+  --major: oklch(0.8 0.12 75);              /* warning amber */
+  --minor: oklch(0.72 0.14 258);            /* info blue */
+  --info: oklch(0.72 0.012 266);            /* muted gray */
+  --blocker-soft: oklch(0.74 0.2 25 / 0.14);
+  --blocker-line: oklch(0.74 0.2 25 / 0.42);
+  --major-soft: oklch(0.8 0.12 75 / 0.16);
+  --major-line: oklch(0.8 0.12 75 / 0.44);
+  --minor-soft: oklch(0.72 0.14 258 / 0.16);
+  --minor-line: oklch(0.72 0.14 258 / 0.44);
+  --info-soft: oklch(0.72 0.012 266 / 0.14);
+
+  /* text tints used inside diffs / tallies */
+  --add-fg: oklch(0.86 0.13 150);
+  --del-fg: oklch(0.82 0.12 25);
+  --edit-fg: oklch(0.85 0.12 80);
+
+  /* ── gates ───────────────────────────────────────────────────── */
+  --ready: oklch(0.72 0.12 150);            /* success green */
+  --inprogress: oklch(0.8 0.12 75);         /* warning amber */
+  --notready: oklch(0.74 0.2 25);           /* error red */
+  --ready-soft: oklch(0.72 0.12 150 / 0.14);
+  --ready-line: oklch(0.72 0.12 150 / 0.4);
+  --inprogress-soft: oklch(0.8 0.12 75 / 0.14);
+  --inprogress-line: oklch(0.8 0.12 75 / 0.4);
+  --notready-soft: oklch(0.74 0.2 25 / 0.14);
+  --notready-line: oklch(0.74 0.2 25 / 0.4);
+
+  /* ── radii (lucide control scale + premium card) ─────────────── */
+  --radius: 16px;
+  --radius-sm: 12px;
+  --radius-card: 24px;
+
+  /* ── shadow recipes (depth from layered shadow, not heavy drops) */
+  --shadow:
+    0 1px 2px oklch(0 0 0 / 0.5),
+    0 8px 24px -10px oklch(0 0 0 / 0.45),
+    inset 0 1px 0 var(--glass-highlight);
+  --glass-shadow: 0 24px 60px -18px oklch(0.05 0.02 264 / 0.6);
+  --backdrop: oklch(0.1 0.012 264 / 0.66);
+
+  /* ── motion (role-based: enter / exit / interactive) ─────────── */
+  --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --ease-interactive: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --dur-fast: 150ms;
+  --dur-quick: 200ms;
+  --dur-normal: 300ms;
+
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg-grad);
+  background-attachment: fixed;
+  color: var(--fg);
+  font: 14px/1.55 var(--sans);
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.005em;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.num, .num-line, .dial-num, .pill, .score, td, th { font-variant-numeric: tabular-nums; }
+
+/* Every inline SVG glyph rides this span (iconSpan). Left as a plain inline box the svg sits on
+ * the text baseline, so the line box reserves descender space under it and the glyph rides high
+ * inside its control — the "off-centre" arrow in the PR quick-link button. Blockifying the svg as
+ * a flex item drops the baseline out of the equation, so the glyph is centred by its own box. */
+.icon { display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.icon > svg { display: block; }
+
+/* glass surface utility — translucent fill + blur + hairline + ambient drop */
+.glass {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+}
+
+/* ============================== topbar ============================== */
+
+.topbar {
+  /* `top` is overwritten inline by restackBanners() while any .top-banner is up: the banners are
+     sticky at a higher z-index and would otherwise paint over this whole 56px header. */
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; flex-wrap: wrap; row-gap: 6px;
+  min-height: 56px; padding: 8px 24px;
+  background: oklch(0.18 0.012 264 / 0.72);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+  border-bottom: 1px solid var(--line);
+}
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-mark { color: var(--accent); }
+.brand-name { font-weight: 700; letter-spacing: -0.01em; font-size: 15px; }
+.brand-tag {
+  color: var(--fg-mute); font-size: 12px; padding-left: 10px; margin-left: 4px;
+  border-left: 1px solid var(--line);
+}
+
+.topnav { display: flex; gap: 4px; margin-left: 28px; flex-wrap: wrap; }
+/* On narrow widths the nav drops below the brand; don't keep the big left indent there. */
+@media (max-width: 620px) { .topnav { margin-left: 0; } }
+.topnav a {
+  font-size: 13px; font-weight: 500; color: var(--fg-mute); padding: 6px 14px; border-radius: 999px;
+  transition: color var(--dur-fast) var(--ease-interactive), background var(--dur-fast) var(--ease-interactive);
+}
+.topnav a:hover { color: var(--fg-dim); }
+.topnav a.active { color: var(--accent-text); background: var(--accent-soft); }
+
+main#app { max-width: 1180px; margin: 0 auto; padding: 30px 24px 80px; }
+/* The review cockpit (feature/PR detail + its board) breaks out of the centered column to
+   span the full viewport, so the status lanes use all the width and never wrap. Home and
+   Guide keep their readable centered width. */
+.detail {
+  width: 100vw; position: relative; left: 50%; margin-left: -50vw;
+  padding: 0 clamp(24px, 4vw, 64px); box-sizing: border-box;
+}
+
+/* ============================== guide ============================== */
+
+.guide { max-width: 920px; }
+.guide-card {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-border); border-radius: var(--radius-card);
+  padding: 24px 28px; margin-bottom: 18px;
+  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+}
+.guide-card h2 { font-size: 17px; margin: 0 0 12px; color: var(--fg); letter-spacing: -0.01em; }
+.guide-card h3 { font-size: 14px; margin: 0 0 6px; color: var(--fg); }
+.guide-card p { margin: 0 0 8px; color: var(--fg-dim); line-height: 1.65; }
+.guide-lead { font-size: 14.5px; }
+.guide-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.guide-col { background: var(--panel-3); border: 1px solid var(--line-soft); border-radius: var(--radius-sm); padding: 16px 18px; }
+.guide-col p { margin: 0; font-size: 13px; }
+
+.guide-steps { display: flex; flex-direction: column; gap: 4px; }
+.guide-step { display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line-soft); }
+.guide-step:last-child { border-bottom: none; }
+.gs-num {
+  flex: none; width: 30px; height: 30px; border-radius: 50%;
+  display: grid; place-items: center; font-weight: 700; font-size: 14px;
+  color: var(--accent-text); background: var(--accent-soft); border: 1px solid var(--accent-line);
+}
+.gs-body { flex: 1; }
+.gs-body p { margin: 0; font-size: 13.5px; }
+.guide-card code { font-family: var(--mono); font-size: 12px; background: var(--panel-3); padding: 1px 7px; border-radius: 6px; color: var(--minor); }
+.guide-cmd { color: var(--accent-text) !important; background: var(--accent-soft) !important; border: 1px solid var(--accent-line); }
+.guide-list { margin: 0; padding-left: 22px; color: var(--fg-dim); line-height: 1.7; }
+.guide-list li { margin: 6px 0; }
+.guide-list .sev-blocker, .guide-list .sev-major, .guide-list .sev-minor, .guide-list .sev-info { font-weight: 600; }
+.guide-try { border-color: var(--accent-line); }
+.guide-foot { color: var(--fg-mute); font-size: 13px; text-align: center; margin-top: 10px; }
+@media (max-width: 760px) { .guide-cols { grid-template-columns: 1fr; } }
+
+/* ============================== headings ============================== */
+
+.view-head { display: flex; align-items: baseline; justify-content: space-between; margin: 4px 0 24px; }
+.view-head h1 { font-size: 22px; font-weight: 680; margin: 0; letter-spacing: -0.02em; }
+.view-sub { color: var(--fg-mute); font-size: 13px; }
+
+/* ============================== workspace lists ============================== */
+
+/* There is no .feature-card and no .features-grid any more: Home and all three kind sections draw
+   the same `.inbox` list of `.inbox-row`s (web/app.js, workspaceRow), so what the card owned either
+   moved onto the row (see .ir-meta, .sev-counts) or went with it. */
+.feature-id { font-family: var(--mono); font-size: 11.5px; color: var(--fg-mute); }
+
+/* Live job folded onto a workspace row — no separate jobs strip. */
+.fc-job { display: flex; align-items: flex-start; gap: 8px;
+  padding: 9px 11px; border-radius: var(--radius-sm); border: 1px solid var(--line);
+  background: var(--panel-3); font-size: 12.5px; }
+.fc-job-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.fc-job-line { display: flex; align-items: center; gap: 8px; }
+.fc-job-verb { font-weight: 600; color: var(--fg); }
+.fc-job-needs { color: var(--major); font-weight: 540; }
+.fc-job-err { color: var(--del-fg); }
+/* Queued/running but nothing is actually running it — say so instead of spinning forever. */
+.fc-job-stale { color: var(--fg-dim); line-height: 1.45; }
+.fc-job-stale strong { color: var(--major); }
+.fc-job-dismiss { flex: none; }
+/* tint the row border by job state so a glance reads "busy / blocked / failed" */
+.fc-busy { border-color: var(--accent-line); }
+.fc-busy-error { border-color: var(--notready-line); }
+/* Needs-your-input rows are sorted to the top and tinted whole-row so they can't be missed. The
+   `fc-` prefix on the job classes is kept on purpose: it names the JOB state — one job state, one
+   tint — and it is shared with the job line (.fc-job) the row folds in. */
+.inbox-row.fc-busy-needs { border-color: var(--major-line); background: var(--major-soft); }
+.inbox-row.fc-busy-needs:hover { border-color: var(--major); }
+.fc-busy-needs .fc-job { border-color: var(--major-line); background: var(--major-soft); }
+.fc-busy-error .fc-job { border-color: var(--notready-line); background: var(--notready-soft); }
+/* Stalled: amber like needs-input (it needs you), but the row border stays calm — the point is
+   "nothing is happening here", not "emergency". */
+.fc-busy-stale { border-color: var(--major-line); }
+.fc-busy-stale .fc-job { border-color: var(--major-line); background: var(--major-soft); }
+/* ============================== triage bands ============================== */
+
+/* The band header is structure, not a control: no border, no fill, no hover — a quiet label with a
+ * hairline running out to the edge, so the eye reads it as a divider and never tries to click it.
+ * (The Done disclosure right below IS clickable, which is exactly why these must not look alike.) */
+.band-head { display: flex; align-items: center; gap: 8px; padding: 2px 2px 10px; }
+.band-head::after { content: ''; flex: 1; height: 1px; background: var(--line-soft); }
+/* The count lives INSIDE the <h2> so heading navigation announces the band's size along with its
+   name (web/app.js, bandSections). That is a tree change, not a design one, so the h2 becomes the
+   flex row .band-head used to be — same 8px gap, same centring — and the count below re-declares
+   the two things it would otherwise inherit from its new parent. */
+.band-label {
+  display: flex; align-items: center; gap: 8px;
+  margin: 0; font-size: 11px; font-weight: 640; line-height: 1.2;
+  text-transform: uppercase; letter-spacing: .07em; color: var(--fg-mute);
+}
+/* `line-height` and `letter-spacing` restate what the count inherited when it was a SIBLING of the
+   h2 — body's 1.55 and body's -0.005em. Taking the heading's instead would shorten the whole header
+   by ~4px (1.2 against 1.55 on the tallest item in the row) and pad "· N" by its .07em uppercase
+   tracking. Both are visible, and moving the count into the heading is meant to be invisible. */
+.band-count {
+  font-size: 11px; font-weight: 500; line-height: 1.55; letter-spacing: -0.005em;
+  color: var(--fg-mute); font-variant-numeric: tabular-nums;
+}
+/* The only band you must act on carries the brand accent — one tint, so it reads as first. */
+.band-needs-you .band-label { color: var(--accent-text); }
+/* Compact bands pack tighter: less air between rows that hold one line each. Keyed off the density
+   the band emits, never off which bands happen to be compact today — a list of band names here is
+   a second copy of WS_BANDS' `density` column, and flipping that column would leave the spacing
+   behind on a band that no longer holds one-liners. One selector now, because the sections and the
+   inbox are banded by the same code into the same container and must breathe alike.
+
+   8px, and chosen rather than inherited: it arrived as an unremarked 10px → 8px in the commit that
+   added the .inbox selector, so it is restated here with its reason. .inbox already sits at 10px in
+   its full-density form, so a compact override of 10px would be no override at all — the rule would
+   claim to pack the parked bands tighter while leaving the list exactly as loose as the band that
+   demands action. 8px is the smallest step that still reads as a gap between one-line rows. */
+.band-density-compact .inbox { gap: 8px; }
+
+/* The note a polled list shows while it is holding its repaint (web/app.js, zoneHeldNote). The
+   requests strip and the "▶ Run N jobs" toolbar are outside that hold and keep updating, so without
+   this the screen states two different things about one queue; this is the held half admitting it.
+
+   Sticky at the BOTTOM of the viewport rather than in the flow above the list, and appended rather
+   than prepended, because of when it appears: a delete-confirm is open and the pointer is already
+   over the red Delete button. Anything that pushes the list down by its own height turns a status
+   line into a misclick on something irreversible. Sticky also keeps it on screen on a long list,
+   where the end of the zone is nowhere near the rows being held.
+
+   z-index 3 clears the band headers; it does not need to clear the modal layer, and must not — a
+   dialog over this list is the one thing that should cover it. */
+.zone-held {
+  position: sticky; bottom: 10px; z-index: 3;
+  display: flex; align-items: flex-start; gap: 8px;
+  margin: 12px 0 0; padding: 9px 13px;
+  border: 1px solid var(--line); border-radius: var(--radius-sm);
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  box-shadow: var(--glass-shadow);
+  color: var(--fg-dim); font-size: 12.5px; line-height: 1.45;
+}
+/* There is deliberately NO height reservation under a held list. A `.zone-holding` padding-bottom of
+   the note's measured height used to sit here, on the theory that a pinned note floats over the last
+   row and that row has to stay reachable — but `position: sticky` keeps the element's own flow box,
+   and that box is already at the END of the zone. Sticky only shifts it UP, and only while the end
+   of the zone is below the fold; at the scroll extreme where it would otherwise land on the last
+   row, it is back in its own space with the row above it. Measured both ways on a 26-row inbox, at
+   1280px and at 420px, at both scroll extremes: the same rows are covered mid-scroll (which the
+   reservation never addressed, since it only ever added room at the end) and no row is covered at
+   maximum scroll either way. What it did add was ~56px of empty space under every held list. */
+.zone-held-glyph { color: var(--fg-mute); line-height: 1.45; }
+/* min-width: 0 so the sentence wraps inside the flex row instead of forcing the note — and with it
+   the page — wider than the viewport at 420px. */
+.zone-held-text { min-width: 0; }
+
+/* State pill: the WS_STATES label, tinted by band so the pill and the header agree at a glance.
+ * Qualified with .chip on purpose — these sit above the chip block, and a bare .ws-pill-* would
+ * lose the tint to .chip's own colours on source order alone. */
+.chip.ws-pill { font-size: 10.5px; font-weight: 560; padding: 1px 8px; }
+.chip.ws-pill-needs-you   { color: var(--major); border-color: var(--major-line); background: var(--major-soft); }
+.chip.ws-pill-in-progress { color: var(--accent-text); border-color: var(--accent-line); background: var(--accent-soft); }
+.chip.ws-pill-waiting     { color: var(--fg-mute); }
+
+/* Placeholder row for a review whose workspace doesn't exist yet. Dashed all through — border and
+   dial alike — because that is the whole message: this is not a workspace yet, there is nothing to
+   open and nothing to score. `cursor: default` and no hover lift for the same reason: the row is not
+   a link, and a row that highlights under the pointer promises somewhere to go. */
+.inbox-row.ir-pending { border-style: dashed; cursor: default; }
+.inbox-row.ir-pending:hover { border-color: var(--glass-border); box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight); }
+.ir-pending-dial { width: 44px; height: 44px; flex: none; display: grid; place-items: center; color: var(--fg-mute);
+  border: 2px dashed var(--line); border-radius: 999px; font-size: 15px; }
+
+/* ============================== readiness dial ============================== */
+
+.dial { position: relative; display: grid; place-items: center; }
+.dial svg { display: block; transform: rotate(0deg); }
+.dial-track { fill: none; stroke: var(--line); stroke-width: 7; stroke-linecap: round; }
+.dial-prog { fill: none; stroke-width: 7; stroke-linecap: round; transition: stroke-dasharray .4s var(--ease-enter); }
+.dial-num {
+  position: absolute; font-weight: 700; letter-spacing: -.5px;
+  font-size: calc(var(--dial-fs, 22px));
+}
+.dial-lg { --dial-fs: 30px; }
+.dial-sm { --dial-fs: 16px; }
+.dial-ready    .dial-prog { stroke: var(--ready); }
+.dial-in-progress .dial-prog { stroke: var(--inprogress); }
+.dial-not-ready .dial-prog { stroke: var(--notready); }
+.dial-unknown  .dial-prog { stroke: var(--fg-mute); }
+.dial-ready    .dial-num { color: var(--ready); }
+.dial-in-progress .dial-num { color: var(--inprogress); }
+.dial-not-ready .dial-num { color: var(--notready); }
+
+/* ============================== severity counts ============================== */
+
+/* The open-severity breakdown, drawn inline on a full section row's "why it is here" line (web/app.js,
+   workspaceRow). It used to be a full-width strip under a card, separated by a rule — on a row that
+   separator would be the row pretending to be a card, so what divides it from the counts beside it is
+   the gap, and nothing else. */
+.sev-counts { display: inline-flex; gap: 12px; align-items: center; }
+.sev { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 560; }
+.sev-glyph { font-size: 11px; }
+.sev-blocker { color: var(--blocker); }
+.sev-major   { color: var(--major); }
+.sev-minor   { color: var(--minor); }
+.sev-info    { color: var(--info); }
+
+/* ============================== chips / badges ============================== */
+
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 2px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 540;
+  background: var(--panel-3); color: var(--fg-dim); border: 1px solid var(--line);
+  white-space: nowrap;
+}
+.status-draft       { color: var(--fg-dim); }
+.status-auditing    { color: var(--accent-text); border-color: var(--accent-line); background: var(--accent-soft); }
+.status-reworking   { color: var(--major); }
+.status-ready       { color: var(--ready); border-color: var(--ready-line); background: var(--ready-soft); }
+.status-implementing{ color: var(--minor); }
+.status-done        { color: var(--fg-mute); }
+
+/* "Mark review complete" / "Reopen" — sits under the gate in the detail header. */
+.btn-complete {
+  margin-top: 8px; font-size: 12.5px; padding: 7px 14px;
+  border-color: var(--ready-line); color: var(--ready); background: var(--ready-soft);
+}
+.btn-complete:hover { background: var(--ready); color: var(--bg); border-color: var(--ready); }
+.btn-complete.is-done { border-color: var(--line); color: var(--fg-dim); background: var(--panel-3); }
+.btn-complete.is-done:hover { background: var(--panel-2); color: var(--fg); }
+/* Completed workspaces read as settled: a muted row. */
+.ir-wrap.ir-done .inbox-row { opacity: .62; }
+.ir-wrap.ir-done .inbox-row:hover { opacity: .9; }
+.ir-done-chip { margin-left: 8px; }
+
+.gate-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 5px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 600;
+  border: 1px solid var(--line);
+}
+.gate-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.gate-ready       { color: var(--ready); background: var(--ready-soft); border-color: var(--ready-line); }
+.gate-in-progress { color: var(--inprogress); background: var(--inprogress-soft); border-color: var(--inprogress-line); }
+.gate-not-ready   { color: var(--notready); background: var(--notready-soft); border-color: var(--notready-line); }
+.gate-unknown     { color: var(--fg-mute); }
+
+/* ============================== kind badge ============================== */
+
+.kind-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 10px 3px 9px; border-radius: 999px;
+  font-size: 11.5px; font-weight: 580; white-space: nowrap;
+  border: 1px solid var(--line); color: var(--fg-dim); background: var(--panel-3);
+}
+.kind-icon { display: inline-flex; }
+.kind-icon svg { display: block; }
+.kind-spec       { color: var(--kind-spec);    background: var(--kind-spec-soft);    border-color: var(--kind-spec-line); }
+.kind-pr-review  { color: var(--kind-review);  background: var(--kind-review-soft);  border-color: var(--kind-review-line); }
+.kind-pr-respond { color: var(--kind-respond); background: var(--kind-respond-soft); border-color: var(--kind-respond-line); }
+
+/* ============================== home inbox ============================== */
+
+.inbox { display: flex; flex-direction: column; gap: 10px; }
+.inbox-row {
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 18px;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-border); border-radius: var(--radius);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+  transition: border-color var(--dur-normal) var(--ease-interactive), box-shadow var(--dur-normal) var(--ease-interactive);
+  cursor: pointer;
+}
+.inbox-row:hover { border-color: var(--accent-line); box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight), 0 0 0 1px var(--accent-line); }
+.ir-dial { flex: none; }
+.ir-main { flex: 1; min-width: 0; }
+.ir-top { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.ir-title { font-weight: 620; font-size: 14.5px; letter-spacing: -0.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ir-needs { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 12.5px; color: var(--fg-dim); }
+.ir-bit { color: var(--fg-dim); }
+.ir-bit + .ir-bit::before { content: "·"; margin-right: 8px; color: var(--line); }
+.ir-clear { color: var(--ready); font-weight: 540; }
+.ir-arrow { flex: none; color: var(--fg-mute); font-size: 16px; transition: transform var(--dur-fast) var(--ease-interactive), color var(--dur-fast) var(--ease-interactive); }
+.inbox-row:hover .ir-arrow { color: var(--accent-text); transform: translateX(3px); }
+
+/* A compact row — same object, denser: what identifies it, the pill that says why it is parked,
+   and one stamp. The dial and the counts are decision material, and nothing in these bands is
+   waiting on a decision from you, so the row only has to be scannable. */
+.inbox-row.ir-compact { padding: 10px 16px; gap: 12px; }
+.ir-compact .ir-top { margin-bottom: 2px; }
+.ir-compact .ir-title { font-size: 13.5px; font-weight: 600; }
+.ir-compact .ir-needs { font-size: 11.5px; }
+
+/* The open-severity counts sit on the row's own "why it is here" line, so they take that line's
+   scale rather than the card's — one line of information, not a block bolted under one. */
+.ir-needs .sev-counts { gap: 11px; }
+.ir-needs .sev { font-size: 12px; }
+
+/* What a spec workspace is assembled from, and when we last ran a round — the line the full section
+   cards carried, on full section rows only (web/app.js, rowParts). Same metrics the card's meta line
+   had, including the "·" between parts, which is what keeps "4 specs · 4 work items" reading as one
+   sentence rather than two columns. */
+.ir-meta {
+  margin-top: 3px; color: var(--fg-mute); font-size: 12.5px;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px 9px;
+}
+.ir-meta > span + span::before { content: "·"; margin-right: 9px; color: var(--line); }
+
+/* The live job folded onto a row. `.fc-job` sits inside the row's text column, so it needs its own
+   separation from the line above. */
+.ir-main .fc-job { margin-top: 8px; }
+.ir-compact .fc-job { padding: 6px 9px; font-size: 12px; }
+.empty-icon { display: inline-flex; color: var(--fg-mute); opacity: .6; margin-bottom: 12px; }
+.empty-icon svg { width: 30px; height: 30px; }
+
+/* ============================== detail header ============================== */
+
+.backlink { display: inline-flex; align-items: center; gap: 6px; color: var(--fg-mute); font-size: 13px; margin-bottom: 14px; }
+.backlink:hover { color: var(--fg); }
+
+.detail-head {
+  display: flex; align-items: center; gap: 26px;
+  padding: 22px 24px; margin-bottom: 16px;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-border); border-radius: var(--radius-card);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+}
+.dh-left { flex: 1; min-width: 0; }
+/* Title + the "open the PR" arrow on one line. The arrow sits on the first line of a wrapping
+ * heading (align-items:start), where the eye already is, rather than centred against two lines. */
+.dh-titlerow { display: flex; align-items: flex-start; gap: 10px; margin: 0 0 12px; }
+.dh-title { font-size: 22px; font-weight: 680; margin: 0; letter-spacing: -0.02em; line-height: 1.28; min-width: 0; }
+.dh-prlink {
+  flex: none; display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; margin-top: 1px; border-radius: var(--radius-sm);
+  color: var(--kind-review); background: var(--kind-review-soft);
+  border: 1px solid var(--kind-review-line); text-decoration: none;
+  transition: background var(--dur-fast) var(--ease-interactive), transform var(--dur-fast) var(--ease-interactive);
+}
+.dh-prlink:hover { background: oklch(0.78 0.13 240 / 0.26); transform: translate(1px, -1px); }
+.dh-prlink:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* metadata (kind · status · id · delete) on its own row under the title, not floating
+ * beside a wrapping heading */
+.dh-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.dh-meta .feature-id { font-family: var(--mono); font-size: 12px; color: var(--fg-mute); }
+
+/* ── Vertec booking line (header) ─────────────────────────────
+ * The exact string that goes into a Vertec booking, copyable in one press, with the booking
+ * phase beside it as information only — deliberately outside the copied text. */
+.vertec-row {
+  display: flex; align-items: flex-start; gap: 10px; margin-top: 12px;
+  padding: 8px 10px 8px 12px; border-radius: var(--radius-sm);
+  background: var(--panel-3); border: 1px solid var(--line);
+}
+.vertec-label {
+  flex: none; margin-top: 2px; color: var(--fg-mute); font-size: 10.5px; font-weight: 620;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.vertec-body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+/* user-select:all so a manual drag grabs exactly the booking string and nothing around it */
+.vertec-text {
+  color: var(--fg); font-size: 13px; font-weight: 560; line-height: 1.4;
+  overflow-wrap: anywhere; user-select: all; -webkit-user-select: all;
+}
+.vertec-missing { color: var(--fg-mute); font-weight: 400; user-select: auto; -webkit-user-select: auto; }
+.vertec-phase { display: flex; align-items: baseline; gap: 6px; font-size: 11.5px; min-width: 0; }
+.vertec-phase-label { flex: none; color: var(--fg-mute); text-transform: uppercase; letter-spacing: 0.05em; font-size: 10px; font-weight: 600; }
+.vertec-phase-text { color: var(--fg-dim); overflow-wrap: anywhere; }
+/* Top-aligned, not centred: when the body wraps to four lines on a narrow viewport a centred
+ * button floats level with the phase, detached from the line it actually copies. */
+.copy-btn { flex: none; align-self: flex-start; margin-top: 1px; color: var(--fg-mute); }
+.copy-btn:hover { color: var(--accent-text); background: var(--accent-soft); }
+.copy-btn.copied, .copy-btn.copied:hover { color: var(--add-fg); background: oklch(0.86 0.13 150 / 0.16); }
+
+/* ── "What this is about" — the workspace summary ─────────────
+ * Sits directly under the header: the question you have before any workflow control means
+ * anything. Written by the review skills; the app never invents one. */
+.ws-summary {
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 14px 18px; margin-bottom: 16px;
+  background: var(--panel); border: 1px solid var(--line-soft);
+  border-left: 3px solid var(--accent-line); border-radius: var(--radius);
+}
+.ws-summary-label {
+  color: var(--fg-mute); font-size: 11px; font-weight: 620;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+/* Type comes from .md.md-prose (which also strips the report view's panel chrome); this only
+ * holds the colour the prose sits on. */
+.ws-summary-body { color: var(--fg-dim); }
+/* A summary that opens with `# Heading` must not draw an h1 inside a panel that already has a
+ * label — md-prose resets the report chrome but leaves the document type scale alone.
+ * The `.md` in the middle is load-bearing: `.ws-summary-body h1` ties (0,1,1) with `.md h1`, which
+ * is declared LATER in this file and therefore won. Only font-weight/border landed — enough to
+ * look styled while the 22px scale stayed. */
+.ws-summary-body .md h1, .ws-summary-body .md h2, .ws-summary-body .md h3 {
+  font-size: 13px; font-weight: 640; margin: 10px 0 4px; padding: 0; border: 0; letter-spacing: 0;
+}
+.ws-summary-body > .md > :first-child { margin-top: 0; }
+.ws-summary-empty { padding: 10px 18px; font-size: 12.5px; }
+.ws-summary-empty code { font-family: var(--mono); font-size: 11.5px; }
+.ws-summary-emptyrow { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.ws-summary-emptyrow > .meta-dim { flex: 1 1 260px; min-width: 0; }
+.ws-summary-btn { flex: none; }
+
+/* ── the approval indicator ───────────────────────────────────
+ * Which PR vote this review has earned. FlowLever never casts it, so this is deliberately NOT a
+ * button — a control that looked pressable but changed nothing on the PR would be worse than no
+ * indicator at all. Sits directly above "Mark review complete", which is the moment the vote
+ * gets forgotten. */
+.approval {
+  display: flex; flex-direction: column; gap: 3px; align-items: flex-start;
+  padding: 7px 11px; border-radius: var(--radius-sm); max-width: 260px;
+  border: 1px solid var(--line); background: var(--panel-3);
+}
+.approval-head { display: flex; align-items: center; gap: 7px; }
+.approval-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; background: var(--fg-mute); }
+.approval-label { font-size: 12.5px; font-weight: 640; color: var(--fg); }
+.approval-why { font-size: 11px; color: var(--fg-mute); line-height: 1.35; }
+.approval-go      { border-color: var(--ready-line);      background: var(--ready-soft); }
+.approval-go .approval-dot      { background: var(--ready); }
+.approval-go .approval-label    { color: var(--ready); }
+.approval-go-soft { border-color: var(--inprogress-line); background: var(--inprogress-soft); }
+.approval-go-soft .approval-dot   { background: var(--inprogress); }
+.approval-go-soft .approval-label { color: var(--inprogress); }
+.approval-hold    { border-color: var(--line); background: var(--panel-3); }
+.approval-hold .approval-dot   { background: var(--fg-mute); }
+.approval-hold .approval-label { color: var(--fg-dim); }
+.dh-sub { color: var(--fg-mute); font-size: 13px; }
+.dh-right { display: flex; align-items: center; gap: 18px; flex: none; }
+.dh-gate { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.dh-blocking {
+  font-size: 12.5px; color: var(--fg-dim); padding: 4px 10px;
+  border-radius: var(--radius-sm); border: 1px solid var(--line); background: var(--panel-3);
+}
+.dh-blocking.hot { color: var(--blocker); border-color: var(--blocker-line); background: var(--blocker-soft); font-weight: 600; }
+
+/* ============================== loop strip + review CTA ============================== */
+
+.loop-strip {
+  display: flex; align-items: center; gap: 12px 16px; flex-wrap: wrap;
+  padding: 14px 20px; margin-bottom: 16px;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-border); border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+/* Keep the steps together on one line as a unit; the CTA wraps to its own row below
+ * when there isn't room beside them (instead of the steps breaking mid-flow). */
+.loop-stages { display: flex; align-items: center; gap: 4px; flex: 0 0 auto; flex-wrap: nowrap; }
+.loop-stage {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 13px; border-radius: 999px; font-size: 12.5px; font-weight: 560;
+  color: var(--fg-mute); background: var(--panel-3); border: 1px solid var(--line);
+  transition: all var(--dur-fast) var(--ease-interactive);
+}
+.loop-stage .loop-ix { font-family: var(--mono); font-size: 10.5px; opacity: .7; }
+.loop-stage.active { color: var(--accent-fg); background: var(--accent); border-color: var(--accent); font-weight: 640; }
+.loop-stage.active .loop-ix { opacity: .85; }
+.loop-sep { color: var(--line); font-size: 13px; flex: none; }
+.review-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 11px 20px; border-radius: var(--radius); font: inherit; font-size: 13.5px; font-weight: 640;
+  cursor: pointer; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-fg);
+  transition: background var(--dur-fast) var(--ease-interactive), transform var(--dur-fast) var(--ease-interactive);
+  letter-spacing: -0.01em;
+}
+.review-cta:hover { background: var(--accent-strong); border-color: var(--accent-strong); }
+.review-cta:active { transform: scale(.98); }
+.review-cta .cta-n {
+  font-family: var(--mono); font-weight: 800; background: oklch(0.3 0.09 89 / 0.22);
+  padding: 1px 8px; border-radius: 999px; font-size: 12.5px;
+}
+.review-cta-done {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 11px 18px; border-radius: var(--radius); font-size: 13px; font-weight: 560;
+  color: var(--fg-dim); background: var(--panel-3); border: 1px solid var(--line);
+}
+.review-cta-done.is-ready { color: var(--ready); border-color: var(--ready-line); background: var(--ready-soft); }
+/* Posted — comments are out, awaiting the author; blue (the review tint) with an inline
+   Re-review button so the next step (reconcile the response) is one click away. */
+.review-cta-done.is-posted {
+  color: var(--kind-review); border-color: var(--kind-review-line); background: var(--kind-review-soft);
+  gap: 12px;
+}
+.review-cta.review-cta-rereview {
+  padding: 8px 14px; font-size: 12.5px;
+  background: var(--kind-review-soft); border-color: var(--kind-review-line); color: var(--kind-review);
+}
+.review-cta.review-cta-rereview:hover { background: var(--kind-review); color: var(--bg); border-color: var(--kind-review); }
+/* The (re-run) loop stage becomes a clickable Re-review trigger once comments are posted. */
+.loop-stage.loop-stage-action {
+  cursor: pointer;
+  color: var(--kind-review); background: var(--kind-review-soft); border-color: var(--kind-review-line);
+}
+.loop-stage.loop-stage-action:hover { background: var(--kind-review); color: var(--bg); border-color: var(--kind-review); }
+.loop-stage.loop-stage-action:focus-visible { outline: 2px solid var(--kind-review); outline-offset: 2px; }
+/* Waiting on author — passive/muted; clickable (re-review anyway) but not shouting for it. */
+.loop-stage.loop-stage-waiting { cursor: pointer; color: var(--fg-mute); background: var(--panel-3); border-style: dashed; }
+.loop-stage.loop-stage-waiting:hover { color: var(--fg-dim); border-color: var(--line); }
+
+/* Waiting on author: muted, passive — the work is out, nothing to do but wait. */
+.review-cta-done.is-waiting { color: var(--fg-mute); border-style: dashed; gap: 12px; }
+.review-cta-link {
+  background: none; border: none; padding: 0; font: inherit; font-size: 12px; font-weight: 560;
+  color: var(--kind-review); cursor: pointer; text-decoration: underline; text-underline-offset: 2px;
+}
+.review-cta-link:hover { color: var(--fg); }
+/* Author responded: attention — blue, with a pulsing dot and a hot Re-review button. */
+.review-cta-done.is-responded {
+  color: var(--kind-review); border-color: var(--kind-review-line); background: var(--kind-review-soft); gap: 12px;
+}
+.review-cta.review-cta-rereview.is-hot { background: var(--kind-review); color: var(--bg); border-color: var(--kind-review); font-weight: 680; }
+.review-cta.review-cta-rereview.is-hot:hover { filter: brightness(1.08); }
+
+/* The review-state line a full section row draws when no job is running. */
+.fc-review { display: flex; align-items: center; gap: 6px; font-size: 12.5px; margin-top: 8px; }
+.fc-review-waiting { color: var(--fg-mute); }
+.fc-review-responded { color: var(--kind-review); font-weight: 560; }
+
+/* ============================== review / activity stamps ============================== */
+
+/* "Reviewed 3h ago · PR updated 20m ago · ● new since your review" — the pair of clocks that
+ * answers "is a re-review worth running?". Muted by default; the PR-updated stamp goes blue
+ * (the review tint) once it is newer than our last round. */
+/* No "·" separators here on purpose: these lines wrap on narrow cards, and a dangling
+ * separator at the start of a wrapped line reads as a typo. The dimmed labels + the wide
+ * column gap do the separating. */
+.review-stamps {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px;
+  font-size: 11.5px; color: var(--fg-mute);
+}
+.detail .review-stamps { margin: -4px 0 14px; padding: 0 2px; }
+.ir-stamps { margin-top: 3px; }
+.stamp { display: inline-flex; align-items: baseline; gap: 5px; white-space: nowrap; }
+.stamp-label { color: var(--fg-mute); }
+.stamp-val { color: var(--fg-dim); font-variant-numeric: tabular-nums; }
+.stamp-new .stamp-label, .stamp-new .stamp-val { color: var(--kind-review); font-weight: 600; }
+.stamp-who { color: var(--fg-mute); font-style: italic; margin-left: 1px; }
+.stamp-flag {
+  display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
+  padding: 1px 8px; border-radius: 999px; font-size: 10.5px; font-weight: 620;
+  color: var(--kind-review); background: var(--kind-review-soft); border: 1px solid var(--kind-review-line);
+}
+
+/* ============================== manual refresh ============================== */
+
+/* The section/home action row: "+ New …" and the manual "↻ Refresh" side by side. */
+.section-actions { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 10px; margin: 0 0 16px; }
+.section-actions .new-request-zone { margin: 0; }
+.section-actions .nr-form { min-width: min(520px, 100%); }
+.refresh-zone { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.btn-refresh { display: inline-flex; align-items: center; }
+.btn-refresh:hover:not(:disabled) {
+  color: var(--kind-review); border-color: var(--kind-review-line); background: var(--kind-review-soft);
+}
+.btn-refresh:disabled { cursor: progress; }
+.btn-refresh.is-error { color: var(--del-fg); border-color: var(--notready-line); }
+.refresh-note { font-size: 11.5px; }
+.refresh-needs { color: var(--major); font-weight: 540; }
+.refresh-err { color: var(--del-fg); }
+
+/* ============================== runner control ============================== */
+
+/* "▶ Run N jobs" — starts the headless /flowlever:watch session that drains the queue. Green,
+   because unlike Refresh this one writes to Azure DevOps. */
+.runner-zone { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.btn-runner { color: var(--add-fg); border-color: var(--ready-line); background: var(--ready-soft); font-weight: 620; }
+.btn-runner:hover { border-color: var(--ready); color: var(--ready); background: var(--ready-soft); }
+.runner-n { font-family: var(--mono); font-weight: 800; }
+.runner-confirm-msg { font-size: 12px; color: var(--fg-dim); }
+.runner-live {
+  display: inline-flex; align-items: center; font-size: 12px; font-weight: 560;
+  color: var(--add-fg); padding: 6px 11px; border-radius: var(--radius-sm);
+  border: 1px solid var(--ready-line); background: var(--ready-soft);
+}
+.btn-runner-stop:hover { border-color: var(--blocker); color: var(--del-fg); background: var(--blocker-soft); }
+.runner-unavailable { font-size: 11.5px; color: var(--major); }
+.runner-unavailable code { font-family: var(--mono); background: var(--panel-3); border-radius: 5px; padding: 0 5px; }
+/* Stalled banner: the fix sits right where the problem is reported. */
+.apply-stalled-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; flex: none; }
+
+/* ============================== fix-commit proof ============================== */
+
+/* A code fix that landed shows the commit carrying it. */
+.f-fix-chip {
+  font-family: var(--mono); font-size: 10.5px; font-weight: 620;
+  padding: 1px 7px; border-radius: 999px;
+  color: var(--add-fg); background: var(--ready-soft); border: 1px solid var(--ready-line);
+}
+/* …and one claimed done with no commit behind it is a defect, not a detail: red, never subtle. */
+.f-fix-chip.f-fix-missing {
+  color: var(--del-fg); background: var(--blocker-soft); border-color: var(--blocker);
+  font-family: inherit;
+}
+.unbacked-fix {
+  align-items: flex-start; flex-wrap: wrap;
+  border-color: var(--blocker); background: var(--blocker-soft); color: var(--fg);
+}
+.unbacked-fix .apply-dot { color: var(--del-fg); }
+.unbacked-fix strong { color: var(--del-fg); }
+
+/* ============================== stale-server warning ============================== */
+
+/* Page-wide bar: the served UI is newer than the running server process, so actions can fail with a
+   bare "Not found". Sits above everything because it explains failures anywhere in the app. */
+.stale-server {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 18px;
+  background: var(--major-soft); border-bottom: 1px solid var(--major-line);
+  font-size: 12.5px; line-height: 1.45; color: var(--fg-dim);
+}
+.stale-server-icon { color: var(--major); font-size: 14px; line-height: 1.3; flex: none; }
+.stale-server-body { flex: 1; min-width: 0; }
+.stale-server-body strong { color: var(--major); }
+
+/* Read-only reuses the banner's shape but not its alarm. The other two banners report something
+ * wrong that the user should act on; this one reports a mode they chose, and will sit there for the
+ * whole session — amber for hours would train the eye to ignore all three. Neutral panel colours,
+ * same layout. */
+.read-only-banner { background: var(--panel-2); border-bottom-color: var(--line); }
+.read-only-banner .stale-server-icon,
+.read-only-banner .stale-server-body strong { color: var(--fg); }
+.read-only-banner code {
+  font-family: var(--mono); font-size: 11.5px;
+  background: var(--panel-3); border-radius: 5px; padding: 0 5px;
+}
+.stale-server code {
+  font-family: var(--mono); font-size: 11.5px; background: var(--panel-3);
+  border-radius: 5px; padding: 1px 6px;
+}
+.stale-server-dismiss { flex: none; }
+/* #server-unreachable (heartbeat missed HEARTBEAT_FAIL_THRESHOLD times) and #server-restarted
+   (the process behind this tab changed) reuse this same bar: same alert color, same layout, their
+   own ids so all three can be up at once (JS stacks them via restackBanners()/.top-banner). */
+.stale-server-reload { flex: none; }
+
+/* ============================== review scope note ============================== */
+
+/* The per-run scope/focus a PR review was launched with (feature.reviewBrief). */
+.review-scope {
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  padding: 9px 16px; margin-bottom: 14px;
+  background: var(--panel); border: 1px solid var(--accent-line); border-radius: var(--radius);
+}
+.review-scope-label {
+  flex: none; color: var(--accent-text); font-size: 11px; font-weight: 620;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.review-scope-text { color: var(--fg-dim); font-size: 13px; line-height: 1.45; }
+
+/* ============================== sources strip ============================== */
+
+/* Label as a section header on its own line; sources below in a tidy aligned grid
+ * instead of a ragged wrap of variable-width pills. */
+.sources-strip {
+  display: flex; flex-direction: column; align-items: stretch; gap: 12px;
+  padding: 14px 18px; margin-bottom: 18px;
+  background: var(--panel); border: 1px solid var(--line-soft); border-radius: var(--radius);
+}
+.src-group { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 8px; align-items: stretch; }
+.src-label { display: inline-flex; align-items: center; gap: 6px; color: var(--fg-mute); font-size: 12px; font-weight: 560; text-transform: uppercase; letter-spacing: .5px; }
+.src-icon { display: inline-flex; flex: none; color: var(--src-tint, var(--fg-dim)); }
+/* one uniform single-line row per source:
+ * role icon · ROLE BADGE · #id · title (ellipsis) · external-link arrow.
+ * The badge and the tint carry the identity, so the role is legible before the title is read —
+ * which is the point: the title is what gets truncated, and clicking the PR when you wanted the
+ * story is the mistake this row exists to stop. */
+.src-link, .src-nolink {
+  display: flex; align-items: center; gap: 8px; min-width: 0; height: 36px;
+  padding: 0 12px 0 10px; border-radius: var(--radius-sm); font-size: 12px;
+  background: var(--panel-3); border: 1px solid var(--line); color: var(--fg-dim);
+  border-left: 3px solid var(--src-tint, var(--line));
+  transition: border-color var(--dur-fast) var(--ease-interactive), color var(--dur-fast) var(--ease-interactive);
+}
+.src-link:hover { border-color: var(--accent-line); border-left-color: var(--src-tint, var(--accent-line)); color: var(--fg); }
+.src-badge {
+  flex: none; padding: 2px 7px; border-radius: 999px; font-size: 10px; font-weight: 650;
+  text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap;
+  color: var(--src-tint, var(--fg-dim));
+  background: var(--src-tint-soft, var(--panel-2));
+  border: 1px solid var(--src-tint-line, var(--line));
+}
+.src-id { flex: none; font-family: var(--mono); font-size: 11px; color: var(--fg-mute); }
+.src-out { opacity: .5; flex: none; margin-left: auto; }
+.src-text { color: var(--fg-dim); flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* One tint per role, set on the row and inherited by its icon + badge. Hues reuse the palette
+ * already in play: PR = the pr-review blue, epic/feature = the pr-respond violet, spec = the
+ * brand yellow, bug = the blocker red, story = the success green. */
+.src-role-pr      { --src-tint: var(--kind-review); --src-tint-soft: var(--kind-review-soft); --src-tint-line: var(--kind-review-line); }
+.src-role-story   { --src-tint: var(--ready); --src-tint-soft: var(--ready-soft); --src-tint-line: var(--ready-line); }
+.src-role-bug     { --src-tint: var(--blocker); --src-tint-soft: var(--blocker-soft); --src-tint-line: var(--blocker-line); }
+.src-role-task    { --src-tint: var(--minor); --src-tint-soft: var(--minor-soft); --src-tint-line: var(--minor-line); }
+.src-role-feature,
+.src-role-epic    { --src-tint: var(--kind-respond); --src-tint-soft: var(--kind-respond-soft); --src-tint-line: var(--kind-respond-line); }
+.src-role-item    { --src-tint: var(--info); --src-tint-soft: var(--info-soft); --src-tint-line: var(--line); }
+.src-role-spec    { --src-tint: var(--accent-text); --src-tint-soft: var(--accent-soft); --src-tint-line: var(--accent-line); }
+.src-role-design  { --src-tint: oklch(0.8 0.13 20); --src-tint-soft: oklch(0.8 0.13 20 / 0.14); --src-tint-line: oklch(0.8 0.13 20 / 0.42); }
+
+/* ============================== tabs ============================== */
+
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin-bottom: 22px; }
+.tab {
+  padding: 9px 16px; font-size: 13.5px; font-weight: 540; color: var(--fg-mute);
+  border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent;
+  margin-bottom: -1px; transition: color var(--dur-fast) var(--ease-interactive), border-color var(--dur-fast) var(--ease-interactive);
+}
+.tab:hover { color: var(--fg-dim); }
+.tab.active { color: var(--fg); border-bottom-color: var(--accent); }
+
+/* ============================== findings board ============================== */
+
+/* Three clean rows — dimension · severity · controls — with chip columns aligned via a
+ * fixed-width label, one uniform control height, and the search box free to grow. */
+.filterbar { display: flex; flex-direction: column; align-items: stretch; gap: 12px; margin-bottom: 20px; }
+.chiprow { display: flex; flex-wrap: wrap; gap: 6px; }
+.fchip {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 0 13px; border-radius: 999px; font-size: 12px; cursor: pointer;
+  background: var(--panel-2); border: 1px solid var(--line); color: var(--fg-mute);
+  transition: all var(--dur-fast) var(--ease-interactive); user-select: none;
+}
+.fchip:hover { color: var(--fg-dim); border-color: var(--fg-mute); }
+.fchip.active { color: var(--accent-text); border-color: var(--accent-line); background: var(--accent-soft); }
+.fchip-sev.active.sev-blocker { border-color: var(--blocker-line); background: var(--blocker-soft); color: var(--blocker); }
+.fchip-sev.active.sev-major   { border-color: var(--major-line); background: var(--major-soft); color: var(--major); }
+.fchip-sev.active.sev-minor   { border-color: var(--minor-line); background: var(--minor-soft); color: var(--minor); }
+.fchip-sev.active.sev-info    { border-color: var(--line); background: var(--info-soft); color: var(--info); }
+.fgroup { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.fgroup-label { color: var(--fg-mute); font-size: 11px; text-transform: uppercase; letter-spacing: .6px; min-width: 84px; flex: none; }
+.fgroup-end { gap: 8px; }
+.fgroup-end .fsearch { flex: 1 1 240px; }
+.fselect, .fsearch {
+  padding: 0 12px; border-radius: var(--radius-sm); font: inherit; font-size: 13px;
+  background: var(--panel-2); border: 1px solid var(--line); color: var(--fg);
+}
+.fsearch { min-width: 220px; }
+/* one consistent height across every filter chip, the status select and the search box */
+.filterbar .fchip, .filterbar .fselect, .filterbar .fsearch { box-sizing: border-box; height: 32px; }
+.fsearch:focus, .fselect:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+/* Open · Reworking · Posting/Applying · Posted/Applied · Resolved · Waived */
+/* Wide screens: a single horizontal row of lanes (classic kanban), each sharing the
+ * width. Narrow screens (below) switch to ONE vertical stack with empty lanes collapsed
+ * — never the wrapped grid that mixes both. */
+.board { display: flex; flex-direction: row; gap: 12px; align-items: flex-start; }
+.board > .col { flex: 1 1 0; min-width: 0; }
+.col { background: var(--panel); border: 1px solid var(--line-soft); border-radius: var(--radius); padding: 10px; min-height: 120px; }
+/* Posted/Applied lane: blue (the review tint) — "out for the author / re-audit", distinct from in-progress Reworking. */
+.col-posted, .col-applied { border-color: var(--kind-review-line); }
+.col-posted .col-title, .col-applied .col-title { color: var(--kind-review); }
+/* Transient in-flight lane (Posting…/Applying…): amber, matches the in-progress cue. */
+.col-pending { border-color: var(--inprogress-line); }
+.col-pending .col-title { color: var(--inprogress); }
+.f-posted-note { width: 100%; font-size: 12px; margin-bottom: 2px; }
+.col-head { display: flex; align-items: center; justify-content: space-between; padding: 4px 6px 10px; }
+.col-title { font-size: 12.5px; font-weight: 640; color: var(--fg-dim); text-transform: uppercase; letter-spacing: .5px; }
+.col-count { font-size: 12px; color: var(--fg-mute); background: var(--panel-3); border-radius: 999px; padding: 1px 8px; }
+.col-body { display: flex; flex-direction: column; gap: 9px; }
+.col-empty { color: var(--fg-mute); font-size: 12px; text-align: center; padding: 18px 0; opacity: .6; }
+
+.finding {
+  background: var(--panel-2); border: 1px solid var(--line); border-left: 3px solid var(--line);
+  border-radius: var(--radius-sm); padding: 11px 12px; cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-interactive), background var(--dur-fast) var(--ease-interactive);
+}
+.finding:hover { background: var(--panel-3); }
+.finding.sevb-blocker { border-left-color: var(--blocker); }
+.finding.sevb-major   { border-left-color: var(--major); }
+.finding.sevb-minor   { border-left-color: var(--minor); }
+.finding.sevb-info    { border-left-color: var(--info); }
+.finding.open { background: var(--panel-3); border-color: var(--accent-line); }
+.finding.pinned { box-shadow: inset 2px 0 0 var(--accent); }
+.f-pin { color: var(--accent); display: inline-flex; }
+.f-head { display: flex; align-items: flex-start; gap: 8px; }
+.f-title { font-size: 13px; font-weight: 560; line-height: 1.35; flex: 1; }
+.f-tags { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 8px; }
+.dim-tag { font-size: 10.5px; text-transform: uppercase; letter-spacing: .5px; color: var(--fg-mute); background: var(--panel-3); border: 1px solid var(--line); border-radius: 999px; padding: 1px 7px; }
+.btn-pin { background: none; border: none; color: var(--fg-mute); cursor: pointer; padding: 2px; display: inline-flex; border-radius: 4px; }
+.btn-pin:hover { color: var(--fg-dim); }
+.btn-pin.active { color: var(--accent); }
+.f-locus { font-family: var(--mono); font-size: 10.5px; color: var(--fg-mute); margin-top: 7px; word-break: break-word; }
+
+/* finding detail (hosted in the modal's detail sub-view) */
+.f-detail { margin: 0; display: flex; flex-direction: column; gap: 9px; }
+.f-body { font-size: 13px; color: var(--fg-dim); line-height: 1.6; display: flex; flex-direction: column; gap: 14px; }
+.f-suggestion { font-size: 12.5px; color: var(--fg-dim); background: var(--accent-soft); border: 1px solid var(--accent-line); border-radius: var(--radius-sm); padding: 8px 10px; }
+.f-suglabel { display: block; font-size: 10.5px; text-transform: uppercase; letter-spacing: .5px; color: var(--accent-text); margin-bottom: 3px; }
+.f-meta { display: flex; flex-wrap: wrap; gap: 10px; }
+.f-meta .num-line, .meta-dim { font-size: 11px; color: var(--fg-mute); }
+.f-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.f-histwrap summary { font-size: 11px; color: var(--fg-mute); cursor: pointer; }
+.f-history { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
+.f-history li { font-size: 11px; color: var(--fg-dim); display: flex; gap: 8px; }
+.hist-note { color: var(--fg-mute); }
+
+/* ============================== proposed-change diff ============================== */
+
+.f-draft-chip {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 17px; height: 17px; padding: 0 4px;
+  font-family: var(--mono); font-size: 11px; font-weight: 700; line-height: 1;
+  color: var(--minor); background: var(--minor-soft); border: 1px solid var(--minor-line); border-radius: 999px;
+}
+/* Board chip for a persisted approve/edit decision (mirrors the finish-screen pills). */
+.f-dec-chip {
+  display: inline-flex; align-items: center; padding: 1px 8px;
+  font-size: 11px; font-weight: 640; border-radius: 999px; border: 1px solid var(--line);
+}
+.f-dec-chip.dec-accept { color: var(--add-fg); border-color: var(--ready-line); background: var(--ready-soft); }
+.f-dec-chip.dec-edit { color: var(--edit-fg); border-color: var(--major-line); background: var(--major-soft); }
+.fchip-draft .draft-glyph { font-family: var(--mono); font-weight: 700; }
+.fchip-draft.active { border-color: var(--minor-line); background: var(--minor-soft); color: var(--minor); }
+
+.f-proposed {
+  margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line-soft);
+  display: flex; flex-direction: column; gap: 8px;
+}
+.diff-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.diff-headmain { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-width: 0; }
+.diff-label { margin-bottom: 0; }
+.diff-target { font-family: var(--mono); font-size: 11px; color: var(--fg-dim); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px; word-break: break-word; }
+.diff-fmt { font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--fg-mute); background: var(--panel-3); border: 1px solid var(--line); border-radius: 999px; padding: 1px 7px; }
+.diff-headright { display: flex; align-items: center; gap: 10px; }
+.diff-counts { font-family: var(--mono); font-size: 11.5px; font-weight: 700; white-space: nowrap; }
+.diff-add-n { color: var(--add-fg); }
+.diff-del-n { color: var(--del-fg); }
+
+.diff-toggle { display: inline-flex; background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 2px; }
+.diff-tab {
+  font: inherit; font-size: 11px; font-weight: 560; cursor: pointer;
+  padding: 3px 11px; border-radius: 999px; border: none; background: none; color: var(--fg-mute);
+  transition: color var(--dur-fast) var(--ease-interactive), background var(--dur-fast) var(--ease-interactive);
+}
+.diff-tab:hover { color: var(--fg-dim); }
+.diff-tab.active { color: var(--accent-text); background: var(--accent-soft); }
+
+.diff-table {
+  font-family: var(--mono); font-size: 11.5px; line-height: 1.55;
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-sm);
+  overflow: auto;
+}
+.diff-row { display: flex; align-items: stretch; }
+.diff-gutter {
+  flex: none; width: 22px; text-align: center; user-select: none;
+  color: var(--fg-mute); border-right: 1px solid var(--line-soft);
+}
+.diff-text { flex: 1; padding: 0 10px; white-space: pre-wrap; word-break: break-word; min-height: 1.55em; color: var(--fg-dim); }
+
+.diff-unified .diff-context { background: transparent; }
+.diff-unified .diff-del { background: var(--blocker-soft); }
+.diff-unified .diff-add { background: var(--ready-soft); }
+.diff-unified .diff-del .diff-gutter, .diff-unified .diff-del .diff-text { color: var(--del-fg); }
+.diff-unified .diff-add .diff-gutter, .diff-unified .diff-add .diff-text { color: var(--add-fg); }
+
+.diff-split .diff-srow { display: grid; grid-template-columns: 1fr 1fr; }
+.diff-split .diff-cell { display: flex; align-items: stretch; min-width: 0; }
+.diff-split .diff-cell-left { border-right: 1px solid var(--line); }
+.diff-split .diff-del { background: var(--blocker-soft); }
+.diff-split .diff-add { background: var(--ready-soft); }
+.diff-split .diff-empty { background: oklch(1 0 0 / 0.02); }
+.diff-split .diff-del .diff-text { color: var(--del-fg); }
+.diff-split .diff-add .diff-text { color: var(--add-fg); }
+
+.diff-trunc { font-size: 11px; color: var(--fg-mute); font-style: italic; }
+.diff-actions { margin-top: 2px; }
+.diff-nochange { padding: 9px 12px; }
+.diff-empty-note { color: var(--fg-mute); font-style: italic; font-size: 11.5px; }
+
+/* ============================== per-hunk review ============================== */
+
+/* Named heading above the per-hunk accept/reject/edit row — it used to have no caption at
+ * all, reading as an unlabeled second "decision" next to the finding-level one below it. */
+.hunk-section-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+.hunk-section-head .step-section-label { margin-bottom: 0; }
+.hunk-tally { display: flex; gap: 12px; flex-wrap: wrap; font-size: 11.5px; color: var(--fg-mute); }
+.hunk-tally .num { font-family: var(--mono); font-weight: 700; }
+.tally-accepted { color: var(--add-fg); }
+.tally-rejected { color: var(--del-fg); }
+.tally-edited { color: var(--edit-fg); }
+.tally-undecided { color: var(--fg-mute); }
+
+.hunk { border: 1px solid var(--line); border-left: 3px solid var(--line); border-radius: var(--radius-sm); overflow: hidden; }
+.hunk + .hunk { margin-top: 8px; }
+.hunk-accepted { border-left-color: var(--ready); }
+.hunk-rejected { border-left-color: var(--blocker); }
+.hunk-edited { border-left-color: var(--major); }
+.hunk-diff .diff-table { border: none; border-radius: 0; }
+.hunk-rejected .hunk-diff { opacity: .5; }
+.hunk-rejected .hunk-diff .diff-text { text-decoration: line-through; text-decoration-color: var(--blocker-line); }
+
+.hunk-actions { display: flex; gap: 6px; flex-wrap: wrap; padding: 7px 9px; border-top: 1px solid var(--line-soft); background: var(--panel); }
+.hunk-btn { font-size: 11.5px; padding: 3px 10px; }
+.hunk-accept.active { background: var(--ready-soft); border-color: var(--ready); color: var(--add-fg); }
+.hunk-reject.active { background: var(--blocker-soft); border-color: var(--blocker); color: var(--del-fg); }
+.hunk-edit.active   { background: var(--major-soft); border-color: var(--major);  color: var(--edit-fg); }
+
+.hunk-edit { display: flex; flex-direction: column; gap: 7px; padding: 8px 9px; border-top: 1px solid var(--line-soft); background: var(--panel); }
+.hunk-edit-label { font-size: 11px; }
+.hunk-edit-ta {
+  font-family: var(--mono); font-size: 11.5px; line-height: 1.5; width: 100%; box-sizing: border-box;
+  resize: vertical; padding: 7px 9px; border-radius: 8px; background: var(--bg); border: 1px solid var(--line); color: var(--fg);
+}
+.hunk-edit-ta:focus { outline: none; border-color: var(--major); }
+.hunk-edit-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.hunk-edited-note { display: flex; flex-direction: column; gap: 4px; padding: 7px 9px; border-top: 1px solid var(--line-soft); background: var(--panel); }
+.hunk-edited-text { font-family: var(--mono); font-size: 11.5px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; margin: 0; color: var(--edit-fg); }
+
+/* ============================== finding-level note / verdict ============================== */
+
+.review-note {
+  display: flex; flex-direction: column; gap: 8px;
+  border: 1px solid var(--line); border-radius: var(--radius-sm);
+  padding: 10px 11px; background: var(--panel); margin-bottom: 4px;
+}
+.review-note-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.review-note-head .f-suglabel { margin-bottom: 0; }
+.verdict-control { display: flex; gap: 6px; flex-wrap: wrap; margin-left: auto; }
+.verdict-btn { font-size: 11.5px; padding: 3px 10px; }
+.verdict-btn-redirect.active { background: var(--major-soft); border-color: var(--major); color: var(--edit-fg); }
+.verdict-btn-reject.active   { background: var(--blocker-soft); border-color: var(--blocker); color: var(--del-fg); }
+.verdict-btn-proposed.active { background: var(--accent-soft); border-color: var(--accent-line); color: var(--accent-text); }
+.note-saved { font-size: 11px; color: var(--ready); min-width: 34px; }
+.review-note-ta {
+  font-family: var(--sans); font-size: 12.5px; line-height: 1.55; width: 100%; box-sizing: border-box;
+  resize: vertical; min-height: 56px; padding: 9px 12px; border-radius: var(--radius-sm);
+  background: var(--bg); border: 1px solid var(--line); color: var(--fg);
+}
+.review-note-ta:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+/* counter-proposal banner above the diff when the verdict overrides the proposal */
+.rm-verdict-banner {
+  display: flex; align-items: center; gap: 9px;
+  padding: 9px 12px; border-radius: var(--radius-sm); font-size: 12.5px; line-height: 1.45;
+  margin: 0 0 4px;
+}
+.rm-verdict-banner .verdict-glyph { font-size: 15px; flex: none; }
+.rm-verdict-banner.verdict-redirect { color: var(--edit-fg); background: var(--major-soft); border: 1px solid var(--major-line); }
+.rm-verdict-banner.verdict-reject   { color: var(--del-fg); background: var(--blocker-soft); border: 1px solid var(--blocker-line); }
+
+/* board / header marker for an overridden finding */
+.f-verdict-chip {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px;
+  padding: 1px 7px; border-radius: 999px;
+}
+.f-verdict-redirect { color: var(--edit-fg); background: var(--major-soft); border: 1px solid var(--major-line); }
+.f-verdict-reject   { color: var(--del-fg); background: var(--blocker-soft); border: 1px solid var(--blocker-line); }
+
+/* ============================== export work order ============================== */
+
+.fchip-export { display: inline-flex; align-items: center; gap: 5px; }
+.fchip-export.active { border-color: var(--accent-line); background: var(--accent-soft); color: var(--accent-text); }
+.fchip-count { font-family: var(--mono); font-weight: 700; font-size: 10.5px; padding: 0 5px; border-radius: 999px; background: var(--panel); border: 1px solid var(--line); }
+
+.export-panel { display: flex; flex-direction: column; gap: 7px; border: 1px solid var(--accent-line); border-radius: var(--radius-sm); padding: 11px; background: var(--panel); }
+.export-feature { margin: 0 0 14px; }
+.export-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.export-empty { margin: 0; font-size: 12px; }
+.export-md {
+  font-family: var(--mono); font-size: 11.5px; line-height: 1.55; width: 100%; box-sizing: border-box;
+  min-height: 190px; resize: vertical; padding: 10px 12px; border-radius: var(--radius-sm);
+  background: var(--bg); border: 1px solid var(--line); color: var(--fg-dim);
+}
+.export-md:focus { outline: none; border-color: var(--accent); }
+
+/* buttons */
+.btn {
+  padding: 6px 13px; border-radius: var(--radius-sm); font: inherit; font-size: 12px; font-weight: 560;
+  background: var(--panel-3); border: 1px solid var(--line); color: var(--fg-dim); cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-interactive);
+}
+.btn:hover { border-color: var(--fg-mute); color: var(--fg); }
+.btn:active { transform: scale(.98); }
+/* Without this, a disabled Apply/Mark button (e.g. gated by an unsaved decision, U-2) was
+ * pixel-identical to a clickable one — "refusing" only worked in the DOM, not on screen. */
+.btn:disabled { opacity: .45; cursor: not-allowed; pointer-events: none; }
+.btn:disabled:hover { border-color: var(--line); color: var(--fg-dim); }
+.btn-accent { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); font-weight: 640; }
+.btn-accent:hover { background: var(--accent-strong); border-color: var(--accent-strong); color: var(--accent-fg); }
+.btn-good { color: var(--add-fg); }
+.btn-good:hover { border-color: var(--ready); color: var(--ready); background: var(--ready-soft); }
+.btn-danger { color: var(--del-fg); }
+.btn-danger:hover { border-color: var(--blocker); color: var(--del-fg); background: var(--blocker-soft); }
+
+/* ============================== review change trigger ============================== */
+
+.f-review-trigger { margin: 0; padding-top: 14px; border-top: 1px solid var(--line-soft); }
+.btn-review {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent-soft); border-color: var(--accent-line); color: var(--accent-text);
+}
+.btn-review:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--fg); }
+.btn-review .draft-glyph { font-family: var(--mono); font-weight: 700; }
+.btn-review .br-label { font-weight: 560; }
+.btn-review .diff-counts { font-size: 11px; }
+.btn-review .br-progress { font-family: var(--mono); font-size: 10.5px; color: var(--fg-mute); }
+
+/* ============================== review modal ============================== */
+
+body.modal-open { overflow: hidden; }
+
+.finding-modal {
+  width: min(960px, 92vw); max-width: 92vw; max-height: 85vh;
+  padding: 0; border: 1px solid var(--glass-border); border-radius: var(--radius-card);
+  background: var(--glass-bg-strong);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  color: var(--fg); box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+  overflow: hidden;
+  transition: width var(--dur-quick) var(--ease-enter);
+}
+/* the review sub-view wants room for the full-width diff (esp. split mode) */
+.finding-modal.modal-review { width: min(1100px, 92vw); }
+.finding-modal::backdrop { background: var(--backdrop); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+
+.rm-frame { display: flex; flex-direction: column; max-height: 85vh; min-height: 0; }
+
+.rm-head {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+  padding: 18px 22px; border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, oklch(0.27 0.012 264 / 0.5), transparent);
+}
+.rm-head-main { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.rm-title { font-size: 16px; margin: 0; color: var(--fg); line-height: 1.3; letter-spacing: -0.01em; }
+.rm-headmeta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.rm-head-right { display: flex; align-items: center; gap: 12px; flex: none; }
+.rm-back { align-self: flex-start; font-size: 12px; padding: 3px 10px; }
+
+/* detail sub-view header */
+.fm-head {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+  padding: 18px 22px; border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, oklch(0.27 0.012 264 / 0.5), transparent);
+}
+.fm-head-main { display: flex; flex-direction: column; gap: 9px; min-width: 0; }
+.fm-titlerow { display: flex; align-items: flex-start; gap: 9px; }
+.fm-titlerow .rm-title { flex: 1; min-width: 0; }
+.fm-titlerow .sev-glyph { font-size: 15px; line-height: 1.4; flex: none; }
+.fm-tags { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.fm-tags .f-locus { margin-top: 0; }
+.rm-close {
+  font-size: 22px; line-height: 1; width: 32px; height: 32px; flex: none;
+  display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+  background: none; border: 1px solid transparent; border-radius: var(--radius-sm); color: var(--fg-mute);
+  transition: color var(--dur-fast) var(--ease-interactive), background var(--dur-fast) var(--ease-interactive), border-color var(--dur-fast) var(--ease-interactive);
+}
+.rm-close:hover { color: var(--fg); background: var(--panel-3); border-color: var(--line); }
+
+.rm-body {
+  flex: 1; min-height: 0; overflow: auto;
+  padding: 18px 22px; display: flex; flex-direction: column; gap: 10px;
+}
+.rm-export { padding: 0 22px 4px; }
+.rm-foot {
+  display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+  padding: 14px 22px; border-top: 1px solid var(--line);
+  background: linear-gradient(0deg, oklch(0.27 0.012 264 / 0.5), transparent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .finding-modal[open] { animation: rm-in var(--dur-normal) var(--ease-enter) both; }
+  .finding-modal[open]::backdrop { animation: rm-fade var(--dur-normal) var(--ease-enter) both; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .finding-modal { transition: none; }
+}
+@keyframes rm-in { from { opacity: 0; transform: translateY(10px) scale(.985); } to { opacity: 1; transform: none; } }
+@keyframes rm-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* waive inline form */
+.waive-form { display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
+.waive-reason { font-size: 11px; color: var(--major); }
+.waive-input { padding: 7px 10px; border-radius: var(--radius-sm); background: var(--panel); border: 1px solid var(--line); color: var(--fg); font: inherit; font-size: 12px; }
+.waive-input.invalid { border-color: var(--blocker); }
+.waive-input:focus { outline: none; border-color: var(--major); }
+
+/* ============================== guided review flow (stepper) ============================== */
+
+.stepper { display: flex; flex-direction: column; gap: 16px; min-height: 70vh; }
+
+.step-top {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  padding: 14px 20px; border-radius: var(--radius);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-border); box-shadow: var(--shadow);
+}
+.step-top-title { font-size: 14px; font-weight: 640; letter-spacing: -0.01em; }
+.step-top-title .meta-dim { font-weight: 400; }
+.step-progress {
+  font-family: var(--mono); font-size: 12.5px; font-weight: 640; color: var(--accent-text);
+  background: var(--accent-soft); border: 1px solid var(--accent-line); padding: 4px 12px; border-radius: 999px;
+}
+.step-progressbar { flex: 1; min-width: 160px; height: 6px; border-radius: 999px; background: var(--panel-3); overflow: hidden; }
+.step-progressbar > i { display: block; height: 100%; background: var(--accent); transition: width var(--dur-normal) var(--ease-enter); }
+/* Discoverability for the decide-loop keyboard shortcuts (U-5) — without this the bindings
+ * exist but no one finds them; hidden below the header width so it never crowds the title. */
+.step-kbd-hint { display: none; font-size: 11px; color: var(--fg-mute); white-space: nowrap; }
+.step-kbd-hint kbd {
+  font-family: var(--mono); font-size: 10.5px; background: var(--panel-3); border: 1px solid var(--line);
+  border-radius: 4px; padding: 1px 5px; color: var(--fg-dim);
+}
+@media (min-width: 900px) { .step-kbd-hint { display: block; } }
+.step-exit { margin-left: auto; }
+
+.step-layout { display: grid; grid-template-columns: 280px 1fr; gap: 16px; align-items: start; }
+
+/* item rail */
+.step-rail {
+  display: flex; flex-direction: column; gap: 4px; padding: 10px;
+  background: var(--panel); border: 1px solid var(--line-soft); border-radius: var(--radius);
+  position: sticky; top: 72px; max-height: calc(100vh - 96px); overflow: auto;
+}
+.rail-head { font-size: 10.5px; text-transform: uppercase; letter-spacing: .6px; color: var(--fg-mute); padding: 4px 8px 8px; font-weight: 640; }
+.rail-item {
+  display: flex; align-items: center; gap: 9px; width: 100%; text-align: left;
+  padding: 8px 10px; border-radius: var(--radius-sm); cursor: pointer;
+  background: none; border: 1px solid transparent; color: var(--fg-dim); font: inherit; font-size: 12.5px;
+  transition: all var(--dur-fast) var(--ease-interactive);
+}
+.rail-item:hover { background: var(--panel-2); }
+.rail-item.active { background: var(--accent-soft); border-color: var(--accent-line); color: var(--fg); }
+.rail-mark { flex: none; width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; font-size: 10px; border: 1.5px solid var(--line); color: var(--fg-mute); }
+.rail-item.decided .rail-mark { border-color: transparent; background: var(--ready); color: var(--accent-fg); font-weight: 800; }
+.rail-item.decided.dec-skip .rail-mark { background: var(--fg-mute); }
+.rail-item.decided.dec-waive .rail-mark { background: var(--major); }
+.rail-item.decided.dec-redirect .rail-mark { background: var(--major); }
+/* Without this the generic `.rail-item.decided .rail-mark` rule above wins and paints a
+ * rejected finding with the same green "done/approved" background as an actual Approve —
+ * exactly the false impression this whole fix exists to prevent. */
+.rail-item.decided.dec-reject .rail-mark { background: var(--blocker); }
+.rail-item.decided.dec-fixonly .rail-mark, .rail-item.decided.dec-fix-only .rail-mark { background: var(--ready); }
+.rail-sev { flex: none; font-size: 11px; }
+/* Two lines, not one truncated one: finding titles are labels but still run past the rail's
+ * width, and a rail of "A canvas with no eleme…" fragments is not navigable. */
+.rail-label {
+  flex: 1; min-width: 0; overflow: hidden; line-height: 1.35;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2;
+}
+
+/* the focused step card */
+.step-card {
+  display: flex; flex-direction: column; gap: 16px; min-width: 0;
+  padding: 22px 24px; border-radius: var(--radius-card);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+}
+.step-finding-head { display: flex; flex-direction: column; gap: 10px; }
+.step-titlerow { display: flex; align-items: flex-start; gap: 10px; }
+.step-titlerow .sev-glyph { font-size: 18px; line-height: 1.3; flex: none; }
+.step-titlerow h2 { font-size: 18px; margin: 0; line-height: 1.3; letter-spacing: -0.01em; flex: 1; min-width: 0; }
+.step-tags { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.step-detail { font-size: 13.5px; color: var(--fg-dim); line-height: 1.65; margin: 0; }
+
+/* "Why this was raised" — the collapsed detail. Reads as a quiet affordance, not a section. */
+.step-why { margin: 0; }
+.step-why > summary {
+  display: inline-flex; align-items: center; gap: 6px; cursor: pointer; width: fit-content;
+  font-size: 11.5px; font-weight: 600; letter-spacing: .3px; color: var(--fg-mute);
+  padding: 3px 0; list-style: none;
+}
+.step-why > summary::-webkit-details-marker { display: none; }
+.step-why > summary::before { content: '▸'; font-size: 12px; transition: transform 120ms ease; }
+.step-why[open] > summary::before { transform: rotate(90deg); }
+.step-why > summary:hover { color: var(--fg-dim); }
+.step-why[open] > summary { margin-bottom: 4px; }
+
+/* Review prose rendered as markdown. `.md` carries the report view's document chrome
+ * (panel background, border, 28px/32px padding) — inline in a card that reads as a second
+ * box nested inside the first, so the inline variants drop the chrome and tighten the
+ * block rhythm to card scale. */
+/* Doubled class on each selector so these beat the `.report-body, .md` panel rule, which
+ * is a single class declared later in this file. */
+.md.md-prose, .md.step-detail, .md.f-detail, .md.rm-detail {
+  background: none; border: 0; border-radius: 0; padding: 0;
+  font-size: 13px; line-height: 1.6;
+}
+.md.md-prose > *:first-child, .md.step-detail > *:first-child,
+.md.f-detail > *:first-child, .md.rm-detail > *:first-child { margin-top: 0; }
+.md.md-prose > *:last-child, .md.step-detail > *:last-child,
+.md.f-detail > *:last-child, .md.rm-detail > *:last-child { margin-bottom: 0; }
+.md.md-prose p, .md.step-detail p, .md.f-detail p, .md.rm-detail p { margin: 7px 0; }
+.md.md-prose ul, .md.md-prose ol { padding-left: 18px; margin: 7px 0; }
+.md.md-prose pre, .md.step-detail pre { margin: 7px 0; }
+
+.note-add-btn { font-size: 11.5px; padding: 4px 10px; color: var(--fg-mute); }
+.step-section-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: .5px; color: var(--fg-mute); font-weight: 640; margin-bottom: 8px; }
+.step-diffwrap { display: flex; flex-direction: column; gap: 8px; }
+.step-diffhead { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+/* decision row */
+.decision-row {
+  display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+  padding: 14px 0 4px; border-top: 1px solid var(--line-soft);
+}
+.decision-label { font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--fg-mute); font-weight: 640; margin-right: 4px; }
+.dec-btn {
+  display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 560;
+  padding: 8px 15px; border-radius: var(--radius-sm); cursor: pointer;
+  background: var(--panel-3); border: 1px solid var(--line); color: var(--fg-dim);
+  transition: all var(--dur-fast) var(--ease-interactive);
+}
+.dec-btn:hover { border-color: var(--fg-mute); color: var(--fg); }
+.dec-btn:active { transform: scale(.98); }
+.dec-btn.on.dec-accept { background: var(--ready-soft); border-color: var(--ready); color: var(--add-fg); }
+.dec-btn.on.dec-edit { background: var(--major-soft); border-color: var(--major); color: var(--edit-fg); }
+.dec-btn.on.dec-redirect { background: var(--major-soft); border-color: var(--major); color: var(--edit-fg); }
+/* Fix only — code goes out, no reply is written. Same green as an applied change (it IS a real
+   code change) but distinguishable from the reply actions. */
+.dec-btn.on.dec-fixonly, .dec-btn.on.dec-fix-only { background: var(--ready-soft); border-color: var(--ready); color: var(--add-fg); }
+.dec-btn.on.dec-waive { background: var(--blocker-soft); border-color: var(--blocker); color: var(--del-fg); }
+.dec-btn.on.dec-skip { background: var(--panel-2); border-color: var(--fg-mute); color: var(--fg); }
+
+/* decision wrap + helper line (kind-aware decision rows carry a one-liner) */
+.decision-wrap { padding-top: 4px; }
+.decision-wrap .decision-row { padding-top: 14px; }
+.decision-helper { margin: 6px 0 0; font-size: 11.5px; }
+
+/* per-finding triage tag — the at-a-glance state of THIS comment's decision */
+.triage-tag {
+  margin-left: auto; font-size: 11px; font-weight: 640; padding: 3px 10px;
+  border-radius: 999px; border: 1px solid var(--line); color: var(--fg-mute);
+  text-transform: uppercase; letter-spacing: .4px;
+}
+.triage-tag.triage-accept { color: var(--add-fg); border-color: var(--ready-line); background: var(--ready-soft); }
+.triage-tag.triage-edit { color: var(--edit-fg); border-color: var(--major-line); background: var(--major-soft); }
+.triage-tag.triage-redirect { color: var(--edit-fg); border-color: var(--major-line); background: var(--major-soft); }
+.triage-tag.triage-waive { color: var(--del-fg); border-color: var(--blocker-line); background: var(--blocker-soft); }
+/* Same blocker palette as .dec-pill.dec-reject — without this rule `.triage-reject` fell through
+ * to no color rule at all, so a rejected card's own triage tag rendered identically to a genuinely
+ * undecided one (indistinguishable grey) even after the label text itself was fixed to say
+ * "Rejected" instead of "Undecided". */
+.triage-tag.triage-reject { color: var(--del-fg); border-color: var(--blocker-line); background: var(--blocker-soft); }
+.triage-tag.triage-undecided { color: var(--fg-mute); }
+
+.dec-undo {
+  font-size: 11.5px; padding: 5px 10px; border-radius: var(--radius-sm); cursor: pointer;
+  background: transparent; border: 1px solid var(--line); color: var(--fg-mute);
+}
+.dec-undo:hover { color: var(--fg); border-color: var(--fg-mute); }
+/* when a triage tag pushes to the right, the undo sits just after it */
+.triage-tag + .dec-undo { margin-left: 8px; }
+
+/* A decision the server never confirmed (U-2) — never let this read as saved: same amber as a
+ * "major" severity so it registers as something to act on, not decoration. Clickable — it
+ * retries the same persist call the original decision made. */
+.dec-not-saved {
+  font-size: 11.5px; font-weight: 640; color: var(--major); cursor: pointer;
+  background: transparent; border: 1px solid var(--major-line); border-radius: var(--radius-sm);
+  padding: 5px 10px;
+}
+.dec-not-saved:hover { background: var(--major-soft); }
+
+/* "Proposed comment" — the pr-review suggestion surfaced as the comment to post */
+.f-suggestion.proposed-comment { background: var(--panel-2); border-color: var(--line); }
+.f-suggestion.proposed-comment .f-suglabel { color: var(--fg-dim); }
+.f-suggestion.proposed-comment p { white-space: pre-wrap; color: var(--fg); }
+
+.comment-edit { margin: 8px 0; }
+.comment-edit .f-suglabel { display: block; margin-bottom: 6px; }
+.comment-edit-ta {
+  width: 100%; box-sizing: border-box; resize: vertical; min-height: 80px;
+  font: inherit; font-size: 13px; line-height: 1.5; padding: 10px 12px;
+  border-radius: var(--radius-sm); border: 1px solid var(--accent-line);
+  background: var(--panel); color: var(--fg);
+}
+.comment-edit-ta:focus { outline: none; border-color: var(--accent); }
+.comment-edit-actions { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+/* Discoverability for the comment-editor save shortcut (U-3), same pattern as .step-kbd-hint:
+ * shown right next to the buttons it duplicates so it's never mistaken for the only way to save. */
+.save-kbd-hint { font-size: 11px; color: var(--fg-mute); white-space: nowrap; }
+.save-kbd-hint kbd {
+  font-family: var(--mono); font-size: 10.5px; background: var(--panel-3); border: 1px solid var(--line);
+  border-radius: 4px; padding: 1px 5px; color: var(--fg-dim);
+}
+
+.btn-post { font-weight: 640; }
+
+.step-nav {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 14px 20px; border-radius: var(--radius);
+  background: var(--panel); border: 1px solid var(--line-soft);
+}
+.step-nav .btn { padding: 8px 16px; font-size: 13px; }
+.step-nav-mid { color: var(--fg-mute); font-size: 12.5px; }
+
+.step-empty { text-align: center; padding: 70px 20px; color: var(--fg-mute); }
+
+/* ============================== decision summary / finish ============================== */
+
+.finish { display: flex; flex-direction: column; gap: 18px; }
+.finish-head {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 24px 26px; border-radius: var(--radius-card);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+}
+.finish-head h1 { font-size: 22px; margin: 0; letter-spacing: -0.02em; }
+.finish-tallies { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+.finish-tally {
+  display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 560;
+  padding: 5px 12px; border-radius: 999px; background: var(--panel-3); border: 1px solid var(--line); color: var(--fg-dim);
+}
+.finish-tally .num { font-family: var(--mono); font-weight: 800; }
+.finish-tally.t-accept { color: var(--add-fg); border-color: var(--ready-line); background: var(--ready-soft); }
+.finish-tally.t-edit, .finish-tally.t-redirect { color: var(--edit-fg); border-color: var(--major-line); background: var(--major-soft); }
+/* Same blocker/del-fg pairing the app already uses for a `reject` verdict everywhere else
+ * (.verdict-btn-reject, .rm-verdict-banner.verdict-reject, .f-verdict-reject). `t-reject` is kept
+ * as its own class rather than folded into `t-waive` — Reject (refusing a proposed change) and
+ * Waive (dismissing the finding) are different reviewer intents and the class names must not
+ * conflate them — but the two currently render pixel-identical: this rule assigns them the exact
+ * same three values on purpose, not merely a similar palette, because there's no visual need yet
+ * to tell them apart on this particular pill. Give `.t-reject` its own values here first if that
+ * ever needs to change. */
+.finish-tally.t-waive, .finish-tally.t-reject { color: var(--del-fg); border-color: var(--blocker-line); background: var(--blocker-soft); }
+.finish-tally.t-skip { color: var(--fg-mute); }
+
+/* Bulk-approve control (U-2): sits right under the tallies it acts on, deliberately styled like
+ * a plain secondary button (not btn-accent) so it doesn't visually compete with the Post button
+ * further down the page — this decides findings, it never sends anything. */
+.approve-all-btn {
+  align-self: flex-start; margin-top: 4px;
+  color: var(--add-fg); border-color: var(--ready-line); background: var(--ready-soft);
+}
+.approve-all-btn:hover { border-color: var(--ready); background: var(--ready-soft); }
+.approve-all-confirm {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 4px;
+}
+.approve-all-confirm-msg { font-size: 12px; color: var(--fg-dim); font-weight: 560; }
+
+.finish-group {
+  border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--panel);
+}
+.finish-group-head {
+  display: flex; align-items: center; gap: 8px; padding: 11px 16px;
+  background: var(--panel-2); border-bottom: 1px solid var(--line-soft);
+}
+.finish-target { font-family: var(--mono); font-size: 12px; color: var(--fg-dim); word-break: break-word; }
+/* One decision below the fold didn't save — say so before Apply/Mark, not just per-row (U-2). */
+.finish-unsaved-warning {
+  font-size: 12.5px; font-weight: 560; color: var(--major); margin: 0;
+  padding: 10px 14px; border-radius: var(--radius-sm); background: var(--major-soft); border: 1px solid var(--major-line);
+}
+.finish-rows { display: flex; flex-direction: column; }
+.finish-row { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-top: 1px solid var(--line-soft); font-size: 13px; }
+.finish-row:first-child { border-top: none; }
+.finish-row .sev-glyph { font-size: 12px; flex: none; }
+.finish-row .frow-title { flex: 1; min-width: 0; color: var(--fg-dim); }
+.dec-pill {
+  flex: none; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px;
+  padding: 2px 9px; border-radius: 999px; background: var(--panel-3); border: 1px solid var(--line); color: var(--fg-mute);
+}
+.dec-pill.dec-accept { color: var(--add-fg); border-color: var(--ready-line); background: var(--ready-soft); }
+.dec-pill.dec-edit, .dec-pill.dec-redirect { color: var(--edit-fg); border-color: var(--major-line); background: var(--major-soft); }
+.dec-pill.dec-fixonly, .dec-pill.dec-fix-only, .f-dec-chip.dec-fixonly, .f-dec-chip.dec-fix-only { color: var(--add-fg); border-color: var(--ready-line); background: var(--ready-soft); }
+.dec-pill.dec-waive, .dec-pill.dec-reject { color: var(--del-fg); border-color: var(--blocker-line); background: var(--blocker-soft); }
+.dec-pill.dec-skip { color: var(--fg-mute); }
+
+.finish-actions {
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+  padding: 18px 20px; border-radius: var(--radius);
+  background: var(--panel); border: 1px solid var(--line-soft);
+}
+.finish-actions .btn { padding: 10px 18px; font-size: 13px; }
+/* Are-you-sure that replaces the primary Apply button in place — same shape as the
+ * PR-post runner-confirm, so both irreversible write-backs read as equally guarded. */
+.apply-confirm { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.finish-next {
+  display: flex; align-items: center; gap: 9px; font-size: 12.5px; color: var(--fg-mute);
+  padding: 12px 16px; border-radius: var(--radius-sm); background: var(--accent-soft); border: 1px solid var(--accent-line);
+}
+.finish-next code { font-family: var(--mono); color: var(--accent-text); background: var(--panel); padding: 1px 7px; border-radius: 5px; }
+
+@media (max-width: 900px) {
+  .step-layout { grid-template-columns: 1fr; }
+  .step-rail { position: static; max-height: 220px; flex-direction: row; flex-wrap: wrap; }
+  .step-rail .rail-head { width: 100%; }
+}
+
+/* ============================== coverage ============================== */
+
+.coverage { display: flex; flex-direction: column; gap: 18px; }
+.cov-table { width: 100%; border-collapse: collapse; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.cov-table th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--fg-mute); padding: 11px 14px; border-bottom: 1px solid var(--line); background: var(--panel-2); }
+.cov-table td { padding: 12px 14px; border-bottom: 1px solid var(--line-soft); font-size: 13px; vertical-align: top; }
+.cov-table tr:last-child td { border-bottom: none; }
+.cov-section { font-weight: 560; }
+.mchip { display: inline-flex; align-items: center; gap: 4px; font-family: var(--mono); font-size: 11px; padding: 2px 7px; border-radius: 6px; background: var(--panel-3); border: 1px solid var(--line); color: var(--fg-dim); margin: 2px 4px 2px 0; }
+.mchip-ado:hover, .mchip-figma:hover { border-color: var(--accent-line); color: var(--fg); }
+.cov-status { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 540; }
+.cov-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--fg-mute); }
+.cov-covered   { color: var(--ready); } .cov-covered .cov-dot { background: var(--ready); }
+.cov-partial   { color: var(--inprogress); } .cov-partial .cov-dot { background: var(--inprogress); }
+.cov-uncovered { color: var(--notready); } .cov-uncovered .cov-dot { background: var(--notready); }
+.cov-orphan    { color: var(--minor); } .cov-orphan .cov-dot { background: var(--minor); }
+.orphans { color: var(--fg-dim); font-size: 13px; }
+.orphans h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .5px; color: var(--fg-mute); margin: 0 0 8px; }
+
+/* ============================== timeline ============================== */
+
+.timeline { display: flex; flex-direction: column; gap: 12px; list-style: none; padding: 0; margin: 0; }
+.round {
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 16px 18px; position: relative;
+}
+.round-head { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.round-n { font-weight: 680; font-size: 14px; }
+.round-note { color: var(--fg-dim); font-size: 12.5px; margin-top: 6px; }
+.round-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill { font-size: 11.5px; padding: 3px 10px; border-radius: 999px; background: var(--panel-3); border: 1px solid var(--line); color: var(--fg-dim); }
+.pill-new { color: var(--accent-text); border-color: var(--accent-line); }
+.pill-resolved { color: var(--ready); }
+.pill-regress { color: var(--blocker); border-color: var(--blocker-line); background: var(--blocker-soft); font-weight: 600; }
+.pill-open { color: var(--fg-dim); }
+.pill-score { color: var(--fg); font-weight: 600; display: inline-flex; align-items: center; gap: 5px; }
+.delta { font-weight: 700; }
+.delta-up { color: var(--ready); }
+.delta-down { color: var(--blocker); }
+.delta-flat { color: var(--fg-mute); }
+
+/* ============================== report tab ============================== */
+
+.report-bar { display: flex; justify-content: flex-end; margin-bottom: 12px; }
+.report-body, .md {
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 28px 32px; line-height: 1.65; color: var(--fg-dim);
+}
+.md h1, .md-h { color: var(--fg); }
+.md h1 { font-size: 22px; margin: 0 0 14px; letter-spacing: -0.02em; }
+.md h2 { font-size: 16px; margin: 26px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); color: var(--fg); }
+.md h3 { font-size: 14px; margin: 18px 0 8px; color: var(--fg); }
+.md p { margin: 8px 0; }
+.md ul, .md ol { padding-left: 22px; }
+.md li { margin: 4px 0; }
+.md code { font-family: var(--mono); font-size: 12px; background: var(--panel-3); padding: 1px 6px; border-radius: 5px; color: var(--minor); }
+.md strong { color: var(--fg); font-weight: 640; }
+.md-table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+.md-table th, .md-table td { text-align: left; padding: 8px 12px; border: 1px solid var(--line); font-size: 13px; }
+.md-table th { background: var(--panel-2); color: var(--fg-dim); font-weight: 600; }
+
+/* ============================== empty / skeleton / toast ============================== */
+
+.empty, .empty-tab { text-align: center; color: var(--fg-mute); padding: 60px 20px; }
+/* Now a captioned legend (glyph + label per severity), not decoration — a first-time
+ * visitor has nowhere else to learn what ◆▲●○ mean before any finding exists. */
+.empty-glyphs { display: flex; justify-content: center; gap: 16px; margin-bottom: 14px; opacity: .8; }
+.empty code { font-family: var(--mono); background: var(--panel-3); padding: 2px 8px; border-radius: 6px; color: var(--fg-dim); }
+
+.skel { background: linear-gradient(90deg, var(--panel) 25%, var(--panel-3) 37%, var(--panel) 63%); background-size: 400% 100%; animation: shimmer 1.4s ease infinite; border-radius: var(--radius-sm); }
+.skel-row   { height: 74px; border-radius: var(--radius); }
+.skel-col   { height: 200px; border-radius: var(--radius); }
+.skel-strip { height: 44px; margin-bottom: 18px; }
+.skel-dial  { width: 96px; height: 96px; border-radius: 50%; flex: none; }
+.skel-title { height: 26px; margin-bottom: 10px; max-width: 320px; }
+.skel-line  { height: 14px; margin-bottom: 8px; }
+.w-120 { width: 120px; }
+.w-200 { width: 200px; }
+.report-skel { height: 320px; }
+@keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
+
+#toasts { position: fixed; top: 68px; right: 18px; display: flex; flex-direction: column; gap: 8px; z-index: 100; }
+.toast {
+  padding: 11px 15px; border-radius: var(--radius-sm); font-size: 13px; max-width: 320px;
+  background: var(--glass-bg-strong);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  backdrop-filter: blur(12px) saturate(140%);
+  border: 1px solid var(--glass-border); color: var(--fg);
+  box-shadow: var(--glass-shadow); opacity: 0; transform: translateX(12px);
+  transition: opacity var(--dur-quick) var(--ease-enter), transform var(--dur-quick) var(--ease-enter);
+}
+.toast.show { opacity: 1; transform: none; }
+.toast-error { border-color: var(--blocker-line); color: var(--del-fg); }
+.toast-success { border-color: var(--ready-line); color: var(--add-fg); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
+
+/* ============================== finding round badges ============================== */
+
+.f-badge {
+  display: inline-flex; align-items: center;
+  padding: 1px 7px; border-radius: 999px; font-size: 9.5px; font-weight: 700;
+  letter-spacing: .6px; text-transform: uppercase; white-space: nowrap;
+}
+.f-badge-new { color: var(--accent-text); background: var(--accent-soft); border: 1px solid var(--accent-line); }
+.f-badge-regressed { color: var(--blocker); background: var(--blocker-soft); border: 1px solid var(--blocker-line); }
+.f-dup-chip {
+  display: inline-flex; align-items: center; padding: 1px 7px; border-radius: 999px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-decoration: none;
+  color: var(--major); background: var(--major-soft); border: 1px solid var(--major-line);
+}
+a.f-dup-chip:hover { border-color: var(--major); filter: brightness(1.15); }
+
+/* Quieter sibling of the DUPLICATE chip: near an existing thread, argued distinct. Muted on
+   purpose — it's a note that a judgement was made, not a warning. */
+.f-notdup-chip {
+  display: inline-flex; align-items: center; padding: 1px 7px; border-radius: 999px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+  color: var(--fg-mute); background: var(--panel-3); border: 1px solid var(--line-soft);
+  cursor: help;
+}
+
+/* ============================== done disclosure (active-first lists) ============================== */
+
+.section-lists { display: flex; flex-direction: column; gap: 16px; }
+.done-disc { border-top: 1px solid var(--line-soft); padding-top: 4px; }
+.done-disc-sum {
+  display: flex; align-items: center; gap: 7px;
+  padding: 8px 2px; font-size: 12px; font-weight: 600; letter-spacing: .02em;
+  color: var(--fg-mute); cursor: pointer; list-style: none; user-select: none;
+}
+.done-disc-sum::-webkit-details-marker { display: none; }
+.done-disc-sum::before { content: '▶'; font-size: 9px; transition: transform var(--dur-fast) var(--ease-interactive); }
+.done-disc[open] .done-disc-sum::before { transform: rotate(90deg); }
+.done-disc-sum:hover { color: var(--fg-dim); }
+.done-disc-body { margin-top: 4px; }
+
+/* The sort control lives in the summary row, pushed to the right so the "Done (n)" label and the
+ * disclosure arrow keep their position. `cursor: default` because the summary sets `pointer` for
+ * the whole row, and a menu that looks like part of the toggle invites clicking the wrong thing. */
+.done-sort { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; cursor: default; }
+.done-sort-label { font-size: 10.5px; font-weight: 500; text-transform: uppercase; letter-spacing: .5px; color: var(--fg-mute); }
+.done-sort-select {
+  font: inherit; font-size: 11.5px; font-weight: 500;
+  padding: 3px 6px; border-radius: var(--radius-sm);
+  border: 1px solid var(--line); background: var(--panel-2); color: var(--fg-dim);
+  cursor: pointer;
+}
+.done-sort-select:hover { border-color: var(--accent-line); color: var(--fg); }
+.done-sort-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+@media (max-width: 620px) { .done-sort-label { display: none; } }
+.all-done-note { color: var(--fg-mute); font-size: 13px; margin: 2px 0; }
+
+/* ============================== timeline disclosure ============================== */
+
+.round-disc {
+  margin-top: 10px;
+  border: 1px solid var(--line-soft); border-radius: var(--radius-sm);
+  background: var(--panel-2);
+}
+.round-disc-sum {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 12px; font-size: 11.5px; color: var(--fg-mute); cursor: pointer;
+  list-style: none; user-select: none;
+}
+.round-disc-sum::-webkit-details-marker { display: none; }
+.round-disc-sum::before { content: '▶'; font-size: 9px; transition: transform var(--dur-fast) var(--ease-interactive); }
+.round-disc[open] .round-disc-sum::before { transform: rotate(90deg); }
+.round-disc-sum:hover { color: var(--fg-dim); }
+.disc-section { padding: 6px 12px 8px; border-top: 1px solid var(--line-soft); }
+.disc-section:first-of-type { border-top: 1px solid var(--line-soft); }
+.disc-label { font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--fg-mute); margin-bottom: 4px; font-weight: 600; }
+.disc-new .disc-label { color: var(--accent-text); }
+.disc-resolved .disc-label { color: var(--ready); }
+.disc-regressed .disc-label { color: var(--blocker); }
+.disc-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+.disc-item { font-size: 12px; color: var(--fg-dim); display: flex; align-items: flex-start; gap: 6px; line-height: 1.4; }
+.disc-note { font-size: 11px; color: var(--fg-mute); margin: 4px 12px 8px; font-style: italic; }
+
+/* ============================== responsive ============================== */
+
+/* Below the width that fits a comfortable horizontal row of lanes, stack the board
+ * vertically (one full-width lane per row) instead of a cramped wrapped grid — and
+ * collapse empty lanes to just their header so they don't waste vertical space. */
+@media (max-width: 1500px) {
+  .board { flex-direction: column; align-items: stretch; }
+  .board > .col { flex: 0 0 auto; width: 100%; min-height: 0; }
+  .col-vacant { min-height: 0; }
+  .col-vacant .col-head { padding-bottom: 6px; }
+  .col-vacant .col-body { display: none; }
+}
+
+@media (max-width: 1024px) {
+  .detail-head { flex-direction: column; align-items: flex-start; gap: 16px; }
+}
+@media (max-width: 620px) {
+  main#app { padding: 16px 14px 60px; }
+  .loop-strip { flex-direction: column; align-items: stretch; }
+  .loop-stages { flex-wrap: wrap; }
+  .review-cta { justify-content: center; }
+}
+
+/* ============================== focus rings (a11y) ============================== */
+
+.topnav a:focus-visible,
+.fchip:focus-visible,
+.btn:focus-visible,
+.btn-pin:focus-visible,
+.finding:focus-visible,
+.review-cta:focus-visible,
+.dec-btn:focus-visible,
+.rail-item:focus-visible,
+a.mchip:focus-visible,
+a.src-link:focus-visible,
+a.inbox-row:focus-visible,
+a.backlink:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  border-radius: 4px;
+}
+.fsearch:focus-visible,
+.fselect:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 0;
+}
+
+/* ============================== UI-triggered job requests ============================== */
+
+/* New-request entry + inline form (PR sections) */
+.new-request-zone { margin: 0 0 16px; }
+.nr-add { display: inline-flex; align-items: center; gap: 6px; }
+.nr-form {
+  display: flex; flex-direction: column; gap: 8px;
+  background: var(--panel-2); border: 1px solid var(--line); border-radius: var(--radius-sm);
+  padding: 12px 14px;
+}
+.nr-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.nr-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.nr-form input, .nr-form textarea {
+  font: inherit; font-size: 13px; color: var(--fg);
+  background: var(--panel-3); border: 1px solid var(--line); border-radius: 8px;
+  padding: 8px 10px;
+}
+.nr-form .nr-prid { width: 150px; }
+.nr-form .nr-title { flex: 1 1 200px; min-width: 160px; }
+.nr-form .nr-instructions { width: 100%; resize: vertical; min-height: 42px; line-height: 1.45; }
+.nr-instr-label { font-size: 12px; font-weight: 560; color: var(--fg-mute); }
+.nr-form input::placeholder, .nr-form textarea::placeholder { color: var(--fg-mute); }
+.nr-form input:focus-visible, .nr-form textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 0; }
+.nr-form input.invalid { border-color: var(--blocker); }
+
+/* Requests strip — the queued / running / done / error rows */
+.requests-strip { margin: 0 0 18px; }
+.requests-strip:empty { display: none; }
+.requests-empty { font-size: 12.5px; margin: 0 0 14px; }
+.requests-head { margin-bottom: 8px; }
+/* "2 JOBS · + 1 on the rows below" is one sentence about one queue. Broken across two lines it
+   reads as two separate claims, which is the arithmetic this note exists to close. */
+.requests-head .f-suglabel { display: inline; margin-bottom: 0; }
+.requests-head-note { font-size: 10.5px; text-transform: uppercase; letter-spacing: .5px; margin-left: 7px; }
+.requests-list { display: flex; flex-direction: column; gap: 8px; }
+.req-row {
+  display: flex; align-items: flex-start; gap: 11px;
+  background: var(--panel-2); border: 1px solid var(--line-soft); border-radius: var(--radius-sm);
+  padding: 11px 14px;
+}
+.req-row.req-running { border-color: var(--accent-line); }
+.req-row.req-done    { border-color: oklch(0.72 0.12 150 / 0.4); }
+.req-row.req-error   { border-color: oklch(0.74 0.2 25 / 0.4); }
+.req-glyph {
+  font-size: 15px; line-height: 1.5; flex: none; width: 18px; text-align: center;
+  color: var(--fg-mute); font-family: var(--mono);
+}
+.req-glyph-running { color: var(--accent-text); }
+.req-glyph-done    { color: var(--ready); }
+.req-glyph-error   { color: var(--del-fg); }
+.req-glyph-stalled { color: var(--major); }
+.req-spin { display: inline-block; animation: req-spin 1s steps(8) infinite; }
+@keyframes req-spin { to { transform: rotate(360deg); } }
+.req-main { flex: 1; min-width: 0; }
+.req-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
+.req-action { font-weight: 620; font-size: 13.5px; color: var(--fg); }
+.req-target { font-family: var(--mono); font-size: 11.5px; color: var(--fg-dim);
+  background: var(--panel-3); border-radius: 6px; padding: 1px 7px; }
+.req-title { font-size: 12.5px; color: var(--fg-dim); }
+/* Marks a strip entry whose PR already has a row below — a second job on one PR, not a second PR. */
+.req-onrow {
+  font-size: 11px; color: var(--fg-mute); border: 1px solid var(--line-soft);
+  border-radius: 6px; padding: 1px 6px; white-space: nowrap;
+}
+.req-sub { font-size: 12px; margin-top: 3px; display: flex; flex-wrap: wrap; gap: 4px; align-items: baseline; }
+.req-statetext { font-weight: 560; }
+.req-state-running { color: var(--accent-text); }
+.req-state-done    { color: var(--ready); }
+.req-state-error   { color: var(--del-fg); }
+.req-note { color: var(--del-fg); }
+.req-open { color: var(--accent-text); text-decoration: none; font-weight: 560; }
+.req-open:hover { text-decoration: underline; }
+/* Per-run review scope/focus carried on the job row. */
+.req-instr { font-size: 12px; color: var(--fg-dim); margin-top: 4px; line-height: 1.4; }
+
+/* "Needs your input" — a job blocked waiting on the user (e.g. a 2FA/auth prompt).
+   Deliberately a hotter orange-amber than the brand yellow so it reads as an alert,
+   not as normal running. */
+.req-row.req-needs { border-color: oklch(0.74 0.17 55 / 0.6); box-shadow: inset 2px 0 0 oklch(0.78 0.17 55); background: var(--major-soft); }
+.req-needsinput {
+  display: flex; gap: 9px; align-items: flex-start; margin-top: 9px;
+  padding: 9px 11px; border-radius: var(--radius-sm);
+  background: oklch(0.78 0.17 55 / 0.14); border: 1px solid oklch(0.74 0.17 55 / 0.5);
+}
+.req-ni-icon { font-size: 14px; line-height: 1.4; flex: none; color: oklch(0.82 0.16 60); }
+.req-ni-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.req-ni-label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+  color: oklch(0.86 0.14 62);
+}
+.req-ni-note { font-size: 12.5px; color: var(--fg-dim); }
+
+/* "No runner picked this up" — same amber alert family as needs-input, since both need the user,
+   but with a paused glyph and no animation. */
+.req-row.req-stale { border-color: var(--major-line); box-shadow: inset 2px 0 0 var(--major); }
+.req-state-stalled { color: var(--major); }
+.req-stalled {
+  display: flex; gap: 9px; align-items: flex-start; margin-top: 9px;
+  padding: 9px 11px; border-radius: var(--radius-sm);
+  background: var(--major-soft); border: 1px solid var(--major-line);
+}
+.req-stalled-icon { font-size: 14px; line-height: 1.4; flex: none; color: var(--major); }
+.req-stalled-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.req-stalled-label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--major);
+}
+.req-stalled-note { font-size: 12.5px; color: var(--fg-dim); }
+
+/* Status legend — a collapsible "?" explainer above the requests strip. */
+.requests-legend { margin-top: 6px; font-size: 12px; }
+.requests-legend summary {
+  cursor: pointer; color: var(--fg-mute); display: inline-flex; align-items: center; gap: 6px;
+  list-style: none; user-select: none;
+}
+.requests-legend summary::-webkit-details-marker { display: none; }
+.requests-legend summary:hover { color: var(--fg-dim); }
+.reqleg-q {
+  display: inline-flex; align-items: center; justify-content: center; width: 15px; height: 15px;
+  border-radius: 50%; border: 1px solid var(--line); font-size: 10px; font-weight: 700;
+}
+.reqleg-grid { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; padding-left: 2px; }
+.reqleg-item { display: flex; align-items: baseline; gap: 8px; }
+.reqleg-glyph { flex: none; width: 16px; text-align: center; font-family: var(--mono); }
+.reqleg-ni { color: oklch(0.82 0.16 60); }
+.reqleg-label { font-weight: 600; color: var(--fg-dim); min-width: 118px; }
+.reqleg-desc { color: var(--fg-mute); }
+.guide-ni { color: oklch(0.84 0.15 62); }
+
+/* Finish-screen "Post comments / replies" enqueue */
+.finish-post {
+  background: var(--panel-2); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 16px 18px; margin: 4px 0 18px;
+}
+.finish-post-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 10px; }
+.finish-post-row .btn { padding: 10px 18px; font-size: 13px; }
+.post-status { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 560; }
+.post-flow { font-family: var(--mono); font-size: 11px; }
+.post-disclosure { display: inline-flex; align-items: center; gap: 7px; margin-top: 10px; font-size: 12px; cursor: pointer; user-select: none; }
+.post-disclosure input { accent-color: var(--accent); cursor: pointer; }
+
+/* The same panel with no control in it: nothing is postable, so it reports the outcome instead of
+ * offering a button that counts to zero. Quieter than the live panel — it asks for nothing. */
+.finish-post-empty { background: var(--panel-3); border-style: dashed; }
+.post-empty-msg { margin: 10px 0 0; font-size: 13px; color: var(--fg-dim); }
+.post-empty-hint { margin: 6px 0 0; font-size: 12px; }
+
+/* ============================== delete / dismiss affordances ============================== */
+
+/* Generic icon-only ghost button used by trash and dismiss controls */
+.btn-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 4px 6px; border: none; background: none; border-radius: var(--radius-sm);
+  color: var(--fg-mute); cursor: pointer; font-size: 14px; line-height: 1;
+  transition: color var(--dur-fast) var(--ease-interactive), background var(--dur-fast) var(--ease-interactive);
+}
+.btn-icon:hover { color: var(--del-fg); background: var(--blocker-soft); }
+.btn-icon:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Inbox row wrapper — flex, keeps the row + trash side-by-side */
+.ir-wrap { display: flex; align-items: stretch; gap: 0; position: relative; }
+.ir-wrap .inbox-row { flex: 1; min-width: 0; }
+.ir-delete {
+  flex: none; align-self: center;
+  opacity: 0; transition: opacity var(--dur-fast) var(--ease-interactive);
+  margin-left: 6px;
+}
+.ir-wrap:hover .ir-delete,
+.ir-wrap:focus-within .ir-delete { opacity: 1; }
+
+/* Inline confirm that replaces the row on trash click — one confirm, because there is one row. */
+.ir-wrap .delete-confirm {
+  flex: 1;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+  padding: 14px 18px;
+  background: var(--glass-bg); border: 1px solid var(--blocker-line);
+  border-radius: var(--radius);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+}
+
+/* Shared confirm message text */
+.delete-confirm-msg { font-size: 13.5px; color: var(--fg-dim); }
+.delete-confirm-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* Inline confirm in the detail header title row */
+.dh-delete-zone { display: inline-flex; align-items: center; margin-left: 4px; }
+.dh-delete { opacity: 0.5; }
+.dh-delete:hover { opacity: 1; }
+.delete-confirm-inline {
+  display: inline-flex; flex-wrap: wrap; align-items: center; gap: 10px;
+  padding: 6px 12px; background: var(--panel-3); border: 1px solid var(--blocker-line);
+  border-radius: var(--radius-sm); font-size: 13px;
+}
+.delete-confirm-inline .delete-confirm-msg { font-size: 12.5px; }
+
+/* Dismiss button on request rows */
+.req-dismiss {
+  flex: none; align-self: flex-start; margin-left: auto;
+  opacity: 0; transition: opacity var(--dur-fast) var(--ease-interactive);
+  font-size: 16px; padding: 2px 6px;
+}
+.req-row:hover .req-dismiss,
+.req-row:focus-within .req-dismiss { opacity: 1; }
+
+/* ============================================================
+   Rendered proposal view (markdown / gherkin) — the legible
+   read view of a spec proposal. Raw diff (Unified/Split) and
+   the Edit textarea remain monospace/raw.
+   ============================================================ */
+.hunk-diff-rendered { padding: 0; background: none; }
+.rendered-diff { display: flex; flex-direction: column; gap: 10px; padding: 4px; }
+.rd-block { border: 1px solid var(--line); border-radius: var(--radius-sm); overflow: hidden; }
+.rd-block .rd-label {
+  font: 600 11px/1.4 ui-sans-serif, system-ui, sans-serif; letter-spacing: 0.04em;
+  text-transform: uppercase; padding: 6px 12px; border-bottom: 1px solid var(--line-soft);
+}
+.rd-current { border-color: var(--blocker-line); background: var(--blocker-soft); }
+.rd-current .rd-label { color: var(--del-fg); background: oklch(0.74 0.2 25 / 0.08); }
+.rd-proposed { border-color: var(--ready-line); background: var(--ready-soft); }
+.rd-proposed .rd-label { color: var(--add-fg); background: oklch(0.72 0.12 150 / 0.08); }
+.rd-body { padding: 10px 14px; color: var(--fg); font: 14px/1.55 ui-sans-serif, system-ui, sans-serif; overflow-x: auto; }
+.rd-body > :first-child { margin-top: 0; }
+.rd-body > :last-child { margin-bottom: 0; }
+.rd-p { margin: 8px 0; }
+.rd-h { margin: 10px 0 6px; font-weight: 700; line-height: 1.3; }
+.rd-ul { margin: 8px 0; padding-left: 20px; }
+.rd-ul li { margin: 3px 0; }
+.rd-body code { font: 12.5px/1.5 ui-monospace, monospace; background: var(--panel-3); padding: 1px 5px; border-radius: 6px; }
+.rd-body strong { color: var(--fg); font-weight: 700; }
+.rd-table { border-collapse: collapse; width: 100%; font-size: 13px; }
+.rd-table th, .rd-table td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; vertical-align: top; }
+.rd-table th { background: var(--panel-3); font-weight: 600; }
+.rd-gherkin { font: 13.5px/1.7 ui-sans-serif, system-ui, sans-serif; }
+.rd-gline { white-space: pre-wrap; }
+.rd-gblank { height: 8px; }
+.rd-kw { color: var(--accent-text); font-weight: 700; margin-right: 6px; }
+.rd-indent { white-space: pre; }
+.rd-pre { white-space: pre-wrap; font: 13px/1.55 ui-monospace, monospace; margin: 0; }
+
+/* ============================================================
+   Apply (spec write-back) busy state + live status line
+   ============================================================ */
+.spinner {
+  display: inline-block; width: 13px; height: 13px; margin-right: 8px; vertical-align: -2px;
+  border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.btn.is-busy { opacity: 0.92; cursor: progress; }
+.apply-status {
+  display: flex; align-items: center; gap: 9px; margin-top: 12px;
+  padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--line);
+  font: 13px/1.45 ui-sans-serif, system-ui, sans-serif; color: var(--fg-dim);
+}
+.apply-status .apply-dot { font-size: 14px; line-height: 1; }
+.apply-running { border-color: var(--inprogress-line); background: var(--inprogress-soft); color: var(--fg); }
+.apply-done { border-color: var(--ready-line); background: var(--ready-soft); color: var(--fg); }
+.apply-done .apply-dot { color: var(--add-fg); }
+.apply-error { border-color: var(--notready-line); background: var(--notready-soft); color: var(--fg); }
+.apply-error .apply-dot { color: var(--del-fg); }
+.apply-needs-input { border-color: var(--major-line); background: var(--major-soft); color: var(--fg); }
+.apply-needs-input .apply-dot { color: var(--major); }
+/* "Nothing is running this" — a queued/running job no runner has touched, or findings stranded in
+   the in-flight lane with no job at all. Amber like needs-input (it needs the user to act) but
+   never animated: a spinner here would be the very lie this state exists to correct. */
+.apply-stalled {
+  align-items: flex-start; flex-wrap: wrap;
+  border-color: var(--major-line); background: var(--major-soft); color: var(--fg);
+}
+.apply-stalled .apply-dot { color: var(--major); }
+.apply-stalled-body { flex: 1; min-width: 240px; display: flex; flex-direction: column; gap: 3px; }
+.apply-stalled-body code, .fc-job-stale code, .req-stalled-note code {
+  font-family: var(--mono); font-size: 11.5px; background: var(--panel-3);
+  border-radius: 5px; padding: 0 5px;
+}
+.btn-cancel-pending { flex: none; align-self: center; }
+.btn-cancel-pending:hover { border-color: var(--major); color: var(--major); background: var(--major-soft); }
+
+/* Reviewer note (their objection / answer) — distinct from the audit suggestion. */
+.f-note { border-left: 3px solid var(--kind-review-line); background: var(--kind-review-soft); }
+.f-note .f-suglabel { color: var(--kind-review); }
+
+/* Live job banner on the feature view + the "review me" card cue */
+.feat-job { margin: 0 0 14px; }
+.f-review-chip {
+  font: 600 11px/1 ui-sans-serif, system-ui, sans-serif; padding: 3px 8px; border-radius: 999px;
+  background: var(--accent-soft); color: var(--accent-text); border: 1px solid var(--accent-line);
+}

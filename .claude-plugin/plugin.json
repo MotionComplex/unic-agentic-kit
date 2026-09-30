@@ -1,0 +1,8 @@
+{
+  "name": "unic",
+  "displayName": "Unic Kit",
+  "version": "1.0.0",
+  "description": "Repo-root skills for Unic delivery work: autopilot (autonomous plan → build → review → fix loop in fresh subagent contexts), pr-review (spec-aware Azure DevOps PR review) and pr-respond (answer PR feedback), plus the autopilot-builder/reviewer/fixer agents.",
+  "author": { "name": "MotionComplex" },
+  "keywords": ["autopilot", "code-review", "pull-request", "azure-devops", "workflow"]
+}

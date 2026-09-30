@@ -1,0 +1,24 @@
+{
+  "name": "unic-agentic-kit",
+  "owner": {
+    "name": "Unic"
+  },
+  "description": "Unic Claude Code marketplace. Hosts unic (autopilot + PR review/respond skills and the autopilot worker agents), dor-dod, and flowlever.",
+  "plugins": [
+    {
+      "name": "unic",
+      "source": "./",
+      "description": "Repo-root skills — autopilot (autonomous plan → build → review → fix loop), pr-review and pr-respond (Azure DevOps PRs) — plus the autopilot-builder/reviewer/fixer agents."
+    },
+    {
+      "name": "dor-dod",
+      "source": "./plugins/dor-dod",
+      "description": "Specification & dev toolkit on the FZAG DXP Definition of Ready/Done: spec (author a story/bug/feature spec to the relevant DoR as markdown), check (audit any artifact against the matching DoR/DoD), and promote (publish a draft to an Azure DevOps work item or Confluence page). One shared source-of-truth checklist; works with or without MCP."
+    },
+    {
+      "name": "flowlever",
+      "source": "./plugins/flowlever",
+      "description": "Local review cockpit for specs and PR review/respond: a fingerprinted findings ledger that tracks issues across audit rounds, a guided review-flow stepper, exportable work orders, and UI-triggered jobs. Bundles a zero-dependency Node app plus /flowlever:* skills."
+    }
+  ]
+}
